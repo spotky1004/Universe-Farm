@@ -62,7 +62,7 @@ $(function (){
       for (var j = 1; j < 10; j++) {
         for (var k = 0; k < 3; k++) {
           if (i == 1 || j == 1 || i == 9 || j == 9) {
-            tileName = 'Resource/background/block.png';
+            tileName = 'Resource/Background/block.png';
           } else {
             if (k == 0) {
               tileName = tileImageBackground[maps[mapNow][(i-2)*7+j-2]];
