@@ -78,30 +78,30 @@ $(function (){
     }
     if (maps[mapNow][3] == 1 && mapNow == 0 && gateReady == 1) {
       if (gateKey[0] == 1) {
-        $('#l1C5Z2').css('background-image', 'url(Resource/portal/1O.png)');
+        $('#l1C5Z2').css('background-image', 'url(Resource/Portal/1O.png)');
       } else {
-        $('#l1C5Z2').css('background-image', 'url(Resource/portal/1C.png)');
+        $('#l1C5Z2').css('background-image', 'url(Resource/Portal/1C.png)');
       }
     }
     if (maps[mapNow][21] == 1 && mapNow == 0 && gateReady == 1) {
       if (gateKey[1] == 1) {
-        $('#l5C1Z2').css('background-image', 'url(Resource/portal/2O.png)');
+        $('#l5C1Z2').css('background-image', 'url(Resource/Portal/2O.png)');
       } else {
-        $('#l5C1Z2').css('background-image', 'url(Resource/portal/2C.png)');
+        $('#l5C1Z2').css('background-image', 'url(Resource/Portal/2C.png)');
       }
     }
     if (maps[mapNow][27] == 1 && mapNow == 0 && gateReady == 1) {
       if (gateKey[2] == 1) {
-        $('#l5C9Z2').css('background-image', 'url(Resource/portal/3O.png)');
+        $('#l5C9Z2').css('background-image', 'url(Resource/Portal/3O.png)');
       } else {
-        $('#l5C9Z2').css('background-image', 'url(Resource/portal/3C.png)');
+        $('#l5C9Z2').css('background-image', 'url(Resource/Portal/3C.png)');
       }
     }
     if (maps[mapNow][45] == 1 && mapNow == 0 && gateReady == 1) {
       if (gateKey[3] == 1) {
-        $('#l9C5Z2').css('background-image', 'url(Resource/portal/4O.png)');
+        $('#l9C5Z2').css('background-image', 'url(Resource/Portal/4O.png)');
       } else {
-        $('#l9C5Z2').css('background-image', 'url(Resource/portal/4C.png)');
+        $('#l9C5Z2').css('background-image', 'url(Resource/Portal/4C.png)');
       }
     }
   }

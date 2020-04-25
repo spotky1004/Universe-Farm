@@ -149,29 +149,29 @@ things = [
   ]
 ];
 tileImageBackground = [
-  'Resource/background/block.png',
-  'Resource/background/normal.png',
+  'Resource/Background/block.png',
+  'Resource/Background/normal.png',
 ];
 tileImageTile = [
   'Resource/transparent.png',
-  'Resource/soil/1.png',
-  'Resource/soil/2.png',
-  'Resource/soil/3.png',
-  'Resource/soil/4.png',
-  'Resource/soil/5.png',
-  'Resource/soil/6.png',
-  'Resource/soil/7.png',
-  'Resource/soil/8.png',
-  'Resource/soil/9.png',
-  'Resource/soil/10.png',
-  'Resource/soil/r1.png',
-  'Resource/soil/r2.png',
-  'Resource/soil/r3.png',
-  'Resource/soil/r4.png',
-  'Resource/pond/1.png',
-  'Resource/pond/2.png',
-  'Resource/pond/3.png',
-  'Resource/pond/4.png'
+  'Resource/Soil/1.png',
+  'Resource/Soil/2.png',
+  'Resource/Soil/3.png',
+  'Resource/Soil/4.png',
+  'Resource/Soil/5.png',
+  'Resource/Soil/6.png',
+  'Resource/Soil/7.png',
+  'Resource/Soil/8.png',
+  'Resource/Soil/9.png',
+  'Resource/Soil/10.png',
+  'Resource/Soil/r1.png',
+  'Resource/Soil/r2.png',
+  'Resource/Soil/r3.png',
+  'Resource/Soil/r4.png',
+  'Resource/Pond/1.png',
+  'Resource/Pond/2.png',
+  'Resource/Pond/3.png',
+  'Resource/Pond/4.png'
 ];
 tileImageThing = [
   'Resource/transparent.png',
