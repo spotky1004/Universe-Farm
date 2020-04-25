@@ -10,11 +10,59 @@
     <link rel="stylesheet" href="main.css">
     <script src="default.js"></script>
     <script src="main.js"></script>
+    <link rel="icon" href="favicon.ico">
     <title>Universe Farm v0.1</title>
   </head>
   <body>
     <div id="warpAll">
-      test
+      <div id="playerStatus">
+        <span>
+          <span class="playerIcon" style="background-image: url(Resource/etc/coin.png)"></span><span id="gold">0</span>
+        </span>
+        <span>
+          <span class="playerIcon" style="background-image: url(Resource/etc/diamond.png)"></span><span id="diamond">0</span>
+        </span>
+        <span>
+          <span id="level">Lv 0</span>
+        </span>
+      </div>
+      <div id="gameScreen">
+        <div id="farm">
+          <div id="l1" class="farmLine"></div>
+          <div id="l2" class="farmLine"></div>
+          <div id="l3" class="farmLine"></div>
+          <div id="l4" class="farmLine"></div>
+          <div id="l5" class="farmLine"></div>
+          <div id="l6" class="farmLine"></div>
+          <div id="l7" class="farmLine"></div>
+          <div id="l8" class="farmLine"></div>
+          <div id="l9" class="farmLine"></div>
+        </div>
+        <div id="cellStatus">
+          Blank Lv.0<br>
+          Plant: None (1m left)<br>
+          Vaule: 0 G
+        </div>
+        <div id="shop">
+          <div id="changeShop" class="clearFix">
+            <span>Upgrade</span>
+            <span>Shop</span>
+          </div>
+          <div id="warpShop">
+            <div class="innerUpgrade">
+              <div class="upgradeThing">
+                <p>Better Hoe</p>
+                <p>Make your hoe faster</p>
+                <hr>
+                <p>Cost: </p><p>200 G</p>
+              </div>
+            </div>
+            <div class="innerShop">
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

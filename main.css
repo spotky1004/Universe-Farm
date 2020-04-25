@@ -1,4 +1,203 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Do Hyeon', sans-serif;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  overflow: hidden;
+}
+.clearFix::after {
+  clear: both;
+  content: '';
+  display: block;
+}
+#playerStatus {
+  z-index: 100;
+  position: absolute;
+  height: 50px;
+  width: 100vw;
+  background-color: rgba(204, 204, 204, 0.5);
+}
+#playerStatus > span {
+  position: absolute;
+  font-weight: bold;
+}
+#playerStatus > span:nth-child(2) {
+  left: 60vw;
+}
+#playerStatus > span:nth-child(3) {
+  top: -5px;
+  left: 80vw;
+}
+.playerIcon {
+  margin-top: 5px;
+  width: 40px;
+  height: 40px;
+  display: block;
+  float: left;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#playerStatus > span > span {
+  font-size: 40px;
+}
+#gold {
+  animation-duration: 2s;
+  animation-name: goldShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes goldShiny {
+  from {
+    color: #ccc93b;
+    text-shadow: 0 0 3px #ccc93b;
+  }
+  50% {
+    color: #a3a134;
+    text-shadow: 0 0 3px #a3a134;
+  }
+  to {
+    color: #ccc93b;
+    text-shadow: 0 0 3px #ccc93b;
+  }
+}
+#diamond {
+  animation-duration: 2s;
+  animation-name: diamondShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes diamondShiny {
+  from {
+    color: #3b97cc;
+    text-shadow: 0 0 3px #3b97cc;
+  }
+  50% {
+    color: #347aa3;
+    text-shadow: 0 0 3px #347aa3;
+  }
+  to {
+    color: #3b97cc;
+    text-shadow: 0 0 3px #3b97cc;
+  }
+}
+#level {
+  animation-duration: 2s;
+  animation-name: levelShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes levelShiny {
+  from {
+    color: #3bcc4a;
+    text-shadow: 0 0 3px #3bcc4a;
+  }
+  50% {
+    color: #34a34e;
+    text-shadow: 0 0 3px #34a34e;
+  }
+  to {
+    color: #3bcc4a;
+    text-shadow: 0 0 3px #3bcc4a;
+  }
+}
+#gameScreen {
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  background-color: #3e7044;
+}
+#farm {
+  z-index: 50;
+  position: absolute;
+  left: 5vh;
+  top: 5vh;
+  width: 90vh;
+  height: 90vh;
+}
+.farmLine {
+  z-index: 51;
+  width: 100%;
+  height: 11.1111%;
+}
+.farmBlock {
+  position: absolute;
+  width: 11.1111%;
+  height: 11.1111%;
+  display: block;
+  float: left;
+  background-size: cover;
+}
+.farmBackground {
+  z-index: 52;
+}
+.farmTile {
+  z-index: 53;
+}
+.farmThing {
+  z-index: 54;
+}
+.canFarm:hover {
+  animation-duration: 0.5s;
+  animation-name: cursorShiny;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes cursorShiny {
+  from {
+    background-color: rgba(145, 145, 145, 0.5);
+  }
+  50% {
+    background-color: rgba(145, 145, 145, 0);
+  }
+  to {
+    background-color: rgba(145, 145, 145, 0.5);
+  }
+}
+#cellStatus {
+  position: absolute;
+  padding-left: 2px;
+  height: 15vh;
+  width: 15vw;
+  font-size: 1.4em;
+  color: #537353;
+  text-shadow: 3px 3px 0 rgba(196, 196, 196, 0.6);
+  left: 5px;
+  top: 60px;
+  background-color: #a3cca8;
+  border: 3px solid #38c94a;
+  border-radius: 3px;
+}
+#shop {
+  position: absolute;
+  height: 90vh;
+  width: 25vw;
+  right: 0px;
+  top: 60px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+#changeShop {
+  margin: 5px auto;
+  width: 90%;
+  height: 25px;
+}
+#changeShop > span {
+  padding-top: 1px;
+  width: 44%;
+  float: left;
+  font-size: 23px;
+  text-align: center;
+  color: #555;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.3s;
+}
+#changeShop > span:not(:last-child) {
+  margin-right: 10%;
+}
+#changeShop > span:hover {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.9);
+
+  transition: all 0.3s;
 }
