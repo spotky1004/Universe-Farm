@@ -11,19 +11,19 @@
     <script src="default.js"></script>
     <script src="main.js"></script>
     <link rel="icon" href="favicon.ico">
-    <title>Universe Farm v0.2.4</title>
+    <title>Universe Farm v0.3</title>
   </head>
   <body>
     <div id="warpAll">
       <div id="playerStatus">
         <span>
-          <span class="playerIcon" style="background-image: url(Resource/etc/coin.png)"></span><span id="gold">0</span>
+          <span class="playerIcon" style="background-image: url(Resource/etc/coin.png)"></span><span id="gold">50</span>
         </span>
         <span>
           <span class="playerIcon" style="background-image: url(Resource/etc/diamond.png)"></span><span id="diamond">0</span>
         </span>
         <span>
-          <span id="level">Lv 0</span>
+          <span id="level">Lv 1</span>
         </span>
       </div>
       <div id="gameScreen">
@@ -38,6 +38,11 @@
           <div id="l8" class="farmLine"></div>
           <div id="l9" class="farmLine"></div>
         </div>
+        <div id="tools">
+          <span class="toolSel" style="background-image: url(Resource/Tool/p1.png)"></span>
+          <span style="background-image: url(Resource/Tool/h1.png)"></span>
+          <span style="background-image: url(Resource/Tool/hand.png)"></span>
+        </div>
         <div id="cellStatus">
           Blank Lv.0<br>
           Plant: None (1m left)<br>
@@ -45,20 +50,57 @@
         </div>
         <div id="shop">
           <div id="changeShop" class="clearFix">
-            <span>Upgrade</span>
-            <span>Shop</span>
+            <span>◀</span>
+            <span>Hand</span>
+            <span>▶</span>
           </div>
           <div id="warpShop">
-            <div class="innerUpgrade">
-              <div class="upgradeThing">
-                <p>Better Hoe</p>
-                <p>Make your hoe faster</p>
-                <hr>
-                <p>Cost: </p><p>200 G</p>
+            <div id="innerHand">
+              <div class="divisionTxt">
+                Creature
+              </div>
+              <hr class="divisionHr">
+              <div id="creatureThing">
+                <span class="handBlock" style="background-image: url(Resource/Pond/1.png)">Pond<br>Price:100</span>
+              </div>
+              <div class="divisionTxt">
+                Seed
+              </div>
+              <hr class="divisionHr">
+              <div id="seedThing">
+                <span class="handBlock reqY" style="background-image: url(Resource/Plant/1-1.png)">Req: Lv1<br>Price: 10</span>
+                <span class="handBlock reqN" style="background-image: url(Resource/Plant/2-1.png)">Req: Lv2</span>
+                <span class="handBlock reqN" style="background-image: url(Resource/Plant/3-1.png)">Req: Lv4</span>
+                <span class="handBlock reqN" style="background-image: url(Resource/Plant/4-1.png)">Req: Lv7</span>
+                <span class="handBlock reqN" style="background-image: url(Resource/Plant/5-1.png)">Req: Lv10</span>
+                <span class="handBlock reqN" style="background-image: url(Resource/Plant/6-1.png)">Req: Lv15</span>
               </div>
             </div>
-            <div class="innerShop">
+            <div id="innerInventory">
 
+            </div>
+            <div id="innerShop">
+
+            </div>
+            <div id="innerUpgrade">
+              <div class="upgradeThing upgradeN">
+                <div>Better pickaxe Lv.0</div>
+                <div>Make your pickaxe faster</div>
+                <hr>
+                <span>Cost: </span><span>100 G</span>
+              </div>
+              <div class="upgradeThing upgradeN">
+                <div>Better Hoe Lv.0</div>
+                <div>Make your hoe faster</div>
+                <hr>
+                <span>Cost: </span><span>100 G</span>
+              </div>
+              <div class="upgradeThing upgradeN">
+                <div>Mineralogy Lv.0</div>
+                <div>Diamond gather chance +1%</div>
+                <hr>
+                <span>Cost: </span><span>100 G</span>
+              </div>
             </div>
           </div>
         </div>
