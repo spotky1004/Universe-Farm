@@ -7,12 +7,12 @@ standardNotation2 = [
 standardNotation3 = [
   'Dc', 'Vg', 'Tg', 'Qag', 'Qig', 'Sxg', 'Spg', 'Ocg', 'Nog', 'Ce'
 ];
-varData = {
+varData = [
   'maps', 'tiles', 'things', 'pickaxeUsed', 'hoeUsed',
   'plantPlanted', 'plantInventory', 'upgradeBought', 'notationForm', 'coin',
   'dia', 'level', 'exp', 'expNeed', 'mapNow',
   'opening', 'pondCount', 'gateKey'
-};
+];
 resetData = {
   0: [
     [
@@ -75,7 +75,7 @@ resetData = {
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 1, 0, 0, 0,
+      0, 0, 0, 5, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0
@@ -131,7 +131,7 @@ resetData = {
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0

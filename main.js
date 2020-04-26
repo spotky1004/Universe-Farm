@@ -302,6 +302,7 @@ $(function (){
 
   setInterval( function (){
     displayMap();
+    gameSave();
   }, 1000);
 
   for (var i = 1; i < 10; i++) {
@@ -326,5 +327,6 @@ $(function (){
   $('#cellStatus').hide();
   $("#warpShop > div").hide();
   $("#warpShop > div:eq(0)").show();
+  gameLoad();
   displayMap();
 });
