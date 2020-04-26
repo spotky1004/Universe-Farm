@@ -49,6 +49,33 @@ $(function (){
       return (num/1000).toFixed(1) + ' s';
     }
   }
+  function gameSave() {
+    var date = new Date();
+    date.setDate(date.getDate() + 2000);
+    var willCookie = "";
+    willCookie += "saveData=";
+    saveFile = {};
+    for (var i = 0; i < varData.length; i++) {
+      saveFile[i] = eval(varData[i]);
+    }
+    willCookie += JSON.stringify(saveFile);
+    willCookie += ";expires=" + date.toUTCString();
+    document.cookie = willCookie;
+  }
+  function gameLoad() {
+    var cookies = document.cookie.split(";");
+    for(var i in cookies) {
+      if(cookies[i].search('saveData') != -1) {
+        const savedFile = JSON.parse(decodeURIComponent(cookies[i].replace('saveData' + "=", "")));
+        dataCopy = JSON.parse(JSON.stringify(resetData));
+        Object.assign(dataCopy, savedFile);
+        for (var i = 0; i < varData.length; i++) {
+          this[varData[i]] = dataCopy[i];
+        }
+        debugStr = dataCopy;
+      }
+    }
+  }
   function displayMap() {
     screenWidth = $(window).width();
     screenHeight = $(window).height();
@@ -170,7 +197,7 @@ $(function (){
         cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand)';
       } else if (maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
         if (hoeUsed[mapNow][thisPoint] != 0) {
-          cellStatus += 'Grass Field<br>Making Grass Field!<br>(Hoe ' + timeNotation((hoeUsed[mapNow][thisPoint]+(600000)/(upgradeBought[1]**2+1))-timeNow) + '/Hand)'
+          cellStatus += 'Grass Field<br>Making Grass Field!<br>(Hoe ' + timeNotation((hoeUsed[mapNow][thisPoint]+(600000)/(upgradeBought[1]**2+1))-timeNow) + ')'
         } else {
           cellStatus += 'Grass Field<br>Click to make farm/make!<br>(Hoe ' + timeNotation(600000/(upgradeBought[1]**2+1)) + '/Hand)';
         }
