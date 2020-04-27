@@ -19,7 +19,7 @@
   background-color: rgba(204, 204, 204, 0.5);
 }
 #playerStatus > span {
-  position: absolute;
+  position: absolute !important;
   font-weight: bold;
 }
 #playerStatus > span:nth-child(2) {
@@ -28,6 +28,14 @@
 #playerStatus > span:nth-child(3) {
   top: -5px;
   left: 80vw;
+}
+#playerStatus > span:nth-child(4) {
+  top: 3px;
+  left: 87vw;
+}
+#playerStatus > span:nth-child(5) {
+  top: 20px;
+  left: 87vw;
 }
 .playerIcon {
   margin-top: 5px;
@@ -41,7 +49,7 @@
 #playerStatus > span > span {
   font-size: 40px;
 }
-#gold {
+#coin {
   animation-duration: 2s;
   animation-name: goldShiny;
   animation-iteration-count: infinite;
@@ -105,7 +113,7 @@
   z-index: 10;
   width: 100vw;
   height: 100vh;
-  background-color: #3e7044;
+  background-color: #5acedb;
 }
 #farm {
   z-index: 50;
@@ -308,5 +316,37 @@
 }
 .upgradeThing > div:nth-child(1) {
   margin: 3px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.inventoryItem {
+  margin-left: 5%;
+  margin-bottom: 0.7vh;
+  width: 90%;
+  height: 8vh;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  transition: all 0.2s;
+}
+.inventoryItem:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+.inventoryItem > span:nth-child(1) {
+  margin: 0.5vh 0.5vh 0 0.5vh;
+  width: 7vh;
+  height: 7vh;
+  display: block;
+  float: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(69, 161, 93, 0.2);
+}
+.inventoryItem > span:nth-child(2) {
+  color: #3e9139;
+  text-shadow: 2.5px 2.5px 0 rgba(121, 194, 116, 0.5);
+}
+.inventoryItem > span:nth-child(2) > div:nth-child(1) {
+  margin-top: 0.7vh;
   background-color: rgba(255, 255, 255, 0.4);
 }

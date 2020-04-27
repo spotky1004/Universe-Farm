@@ -11,19 +11,27 @@
     <script src="default.js"></script>
     <script src="main.js"></script>
     <link rel="icon" href="favicon.ico">
-    <title>Universe Farm v0.4.2</title>
+    <title>Universe Farm v0.5</title>
   </head>
   <body>
     <div id="warpAll">
       <div id="playerStatus">
         <span>
-          <span class="playerIcon" style="background-image: url(Resource/etc/coin.png)"></span><span id="gold">50</span>
+          <span class="playerIcon" style="background-image: url(Resource/etc/coin.png)"></span><span id="coin">50</span>
         </span>
         <span>
           <span class="playerIcon" style="background-image: url(Resource/etc/diamond.png)"></span><span id="diamond">0</span>
         </span>
         <span>
           <span id="level">Lv 1</span>
+        </span>
+        <span>
+          <div id="exp">
+            0 / 10 EXP (0%)
+          </div>
+        </span>
+        <span>
+          <meter id="levelProgress" value="0" max="1"></meter>
         </span>
       </div>
       <div id="gameScreen">
@@ -68,16 +76,20 @@
               </div>
               <hr class="divisionHr">
               <div id="seedThing">
-                <span class="handBlock reqY" style="background-image: url(Resource/Plant/1-1.png)">Req: Lv1<br>Price: 10</span>
-                <span class="handBlock reqN" style="background-image: url(Resource/Plant/2-1.png)">Req: Lv2</span>
-                <span class="handBlock reqN" style="background-image: url(Resource/Plant/3-1.png)">Req: Lv4</span>
-                <span class="handBlock reqN" style="background-image: url(Resource/Plant/4-1.png)">Req: Lv7</span>
-                <span class="handBlock reqN" style="background-image: url(Resource/Plant/5-1.png)">Req: Lv10</span>
-                <span class="handBlock reqN" style="background-image: url(Resource/Plant/6-1.png)">Req: Lv15</span>
               </div>
             </div>
             <div id="innerInventory">
-
+              <div class="inventoryItem">
+                <span style="background-image: url(Resource/Plant/1-7.png)"></span>
+                <span>
+                  <div>
+                    Barry (Cost: 40)
+                  </div>
+                  <div>
+                    You own: 1
+                  </div>
+                </span>
+              </div>
             </div>
             <div id="innerShop">
 

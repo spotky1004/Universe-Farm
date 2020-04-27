@@ -2,7 +2,7 @@ $(function (){
   notationForm = 0;
   screenWidthBef = 0;
   screenHeightBef = 0;
-  coin = 50;
+  coin = 0;
   dia = 0;
   level = 1;
   exp = 0;
@@ -13,6 +13,7 @@ $(function (){
   handType = 0;
   handSel = 0;
   opening = 0;
+  farmOn = 0;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
 
@@ -76,6 +77,29 @@ $(function (){
       }
     }
   }
+  function displayPlayer() {
+    $('#coin').html(function (index,html) {
+      return notation(coin);
+    });
+    $('#diamond').html(function (index,html) {
+      return dia;
+    });
+    $('#level').html(function (index,html) {
+      return 'Lv '+ level;
+    });
+    $('#exp').html(function (index,html) {
+      return notation(exp) + ' / ' + notation(expNeed) + ' EXP (' + (exp/expNeed*100).toFixed(1) + '%)';
+    });
+    expNeed = 1.8**(level-1)*10
+    if (exp >= expNeed) {
+      level++;
+      exp -= expNeed;
+      levelUp();
+    }
+    $("#levelProgress").attr({
+      'value' : exp/expNeed
+    });
+  }
   function displayMap() {
     screenWidth = $(window).width();
     screenHeight = $(window).height();
@@ -121,7 +145,7 @@ $(function (){
             tiles[mapNow][thisPoint] = 5;
           }
           if (k == 0) {
-            tileName = tileImageBackground[maps[mapNow][(i-2)*7+j-2]];
+            tileName = tileImageBackground[maps[mapNow][thisPoint]];
           } else if (k == 1) {
             if (tiles[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
               tiles[mapNow][thisPoint] = 5;
@@ -139,8 +163,24 @@ $(function (){
               }
             }
             tileName = tileImageTile[tiles[mapNow][thisPoint]];
+            if (maps[mapNow][thisPoint] != 1 && pickaxeUsed[mapNow][thisPoint] != 0) {
+              blockStatus = Math.floor((1-(pickaxeUsed[mapNow][thisPoint]-(timeNow-((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]+1)**2)))/((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]+1)**2))*5)+1;
+              tileName = 'Resource/Motion/b' + blockStatus + '.png';
+            }
+            if (tiles[mapNow][thisPoint] == 0 && hoeUsed[mapNow][thisPoint] != 0) {
+              blockStatus = Math.floor((1-(((hoeUsed[mapNow][thisPoint])-(timeNow-(600000/(upgradeBought[1]**2+1))))/((600000/(upgradeBought[1]**2+1)))))*5)+1;
+              tileName = 'Resource/Motion/f' + blockStatus + '.png';
+            }
           } else if (k == 2) {
-            tileName = tileImageThing[things[mapNow][(i-2)*7+j-2]];
+            tileName = tileImageThing[things[mapNow][thisPoint]];
+            if (plantPlantedTime[mapNow][thisPoint] != 0) {
+              seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
+              blockStatus = Math.floor((1-((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))*(plantLevels[seedNum]-1))+1;
+              if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
+                plantPlantedTime[mapNow][thisPoint] = timeNow-(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1));
+              }
+              tileName = 'Resource/Plant/' + (seedNum+1) + '-' + blockStatus + '.png';
+            }
           }
           $('#l' + i + 'C' + j + 'Z' + k).css('background-image', 'url(' + tileName + ')');
         }
@@ -175,12 +215,65 @@ $(function (){
       }
     }
   }
-  $(document).on('mouseover','.farmThing',function(e) {
-    thisCell = $(".farmThing").index(this);
+  function displayShop() {
+    $('#creatureThing > span:eq(0)').html(function (index,html) {
+      return 'Pond<br>Price: ' + notation(100*3**pondCount[mapNow]);
+    });
+  }
+  function displayInventory() {
+    $('#innerInventory').html(function (index,html) {
+      return '';
+    });
+    thingsHave = 0;
+    for (var i = 0; i < plantInventory.length; i++) {
+      if (plantInventory[i] >= 1) {
+        $('<div>').addClass('inventoryItem').appendTo('#innerInventory');
+        $('<span>').appendTo('.inventoryItem:eq(' + thingsHave + ')');
+        $('<span>').appendTo('.inventoryItem:eq(' + thingsHave + ')');
+        $('<div>').appendTo('.inventoryItem:eq(' + thingsHave + ') > span:eq(1)');
+        $('<div>').appendTo('.inventoryItem:eq(' + thingsHave + ') > span:eq(1)');
+        $('.inventoryItem:eq(' + thingsHave + ') > span:eq(0)').attr({
+          'style' : 'background-image: url(Resource/Plant/' + (i+1) + '-' + plantLevels[i] + '.png)'
+        });
+        $('.inventoryItem:eq(' + thingsHave + ') > span:eq(1) > div:eq(0)').html(function (index,html) {
+          return plantName[i] + ' (Sell Price: ' + notation(plantSellPrice[i]) + ')';
+        });
+        $('.inventoryItem:eq(' + thingsHave + ') > span:eq(1) > div:eq(1)').html(function (index,html) {
+          return 'You own: ' + plantInventory[i];
+        });
+        thingsHave++;
+      }
+    }
+  }
+  function levelUp() {
+    $('#seedThing').html(function (index,html) {
+      return '';
+    });
+    for (var i = 0; i < plantLevels.length; i++) {
+      if (plantLvReq[i-1] <= level || i == 0) {
+        if (plantLvReq[i] <= level) {
+          $('<span>').addClass('handBlock').addClass('reqY').appendTo('#seedThing');
+        } else {
+          $('<span>').addClass('handBlock').addClass('reqN').appendTo('#seedThing');
+        }
+        $("#seedThing > span:eq(" + i + ")").attr({
+            'style' : 'background-image: url(Resource/Plant/' + (i+1) + '-1.png)'
+        });
+        $('#seedThing > span:eq(' + i + ')').html(function (index,html) {
+          return 'req: ' + plantLvReq[i] + 'Lv';
+        });
+      }
+    }
+  }
+  function cellStatusSet(num) {
+    thisCell = num;
     thisPoint = Math.floor((thisCell-9)/9)*7+thisCell%9-1;
     farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
     cellStatus = '';
-    if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
+    if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
+      seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
+      cellStatus += plantName[seedNum] + '<br>Seed planted here!<br>(Mature: ' + timeNotation((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow) + ')';
+    } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4) {
         cellStatus += 'Fire Portal<br>';
       } else if (maps[mapNow][27] == 1 && mapNow == 0 && thisCell == 44) {
@@ -194,10 +287,15 @@ $(function (){
       }
     } else if (maps[mapNow][thisPoint] >= 1) {
       if (tiles[mapNow][thisPoint] != 0 && tiles[mapNow][thisPoint] < 15) {
-        cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand)';
+        if (handType == 2 && toolSel == 2) {
+          seedNum = handSel;
+          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand ' + timeNotation(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)) + ')';
+        } else {
+          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand)';
+        }
       } else if (maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
         if (hoeUsed[mapNow][thisPoint] != 0) {
-          cellStatus += 'Grass Field<br>Making Grass Field!<br>(Hoe ' + timeNotation((hoeUsed[mapNow][thisPoint]+(600000)/(upgradeBought[1]**2+1))-timeNow) + ')'
+          cellStatus += 'Grass Field<br>Making farm!<br>(Hoe ' + timeNotation((hoeUsed[mapNow][thisPoint]+(600000)/(upgradeBought[1]**2+1))-timeNow) + ')<br>Click again to cancel<br>'
         } else {
           cellStatus += 'Grass Field<br>Click to make farm/make!<br>(Hoe ' + timeNotation(600000/(upgradeBought[1]**2+1)) + '/Hand)';
         }
@@ -206,11 +304,11 @@ $(function (){
       }
     } else if ((thisPoint >= 7 && maps[mapNow][thisPoint-7] >= 1) || (thisPoint <= 41 && maps[mapNow][thisPoint+7] >= 1) || (thisPoint%7 != 0 && maps[mapNow][thisPoint-1] >= 1) || ((thisPoint+1)%7 != 0 && maps[mapNow][thisPoint+1] >= 1)) {
       if (pickaxeUsed[mapNow][thisPoint] != 0) {
-        cellStatus += 'Block<br>Making grass field!<br>(' + timeNotation((pickaxeUsed[mapNow][thisPoint]+(((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1))-timeNow) + ')';
+        cellStatus += 'Block<br>Making grass field!<br>(' + timeNotation((pickaxeUsed[mapNow][thisPoint]+(((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1))-timeNow) + ')<br>Click again to cancel';
       } else if (opening == 1) {
         cellStatus += 'Already working!<br>';
       } else {
-        cellStatus += 'Block<br>Click to make grass field!<br>(Piakaxe ' + timeNotation((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1)) + ')';
+        cellStatus += 'Block<br>Click to make grass field!<br>(Pickaxe ' + timeNotation((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1)) + ')';
       }
     }
     if (cellStatus == '') {
@@ -219,16 +317,42 @@ $(function (){
     $('#cellStatus').html(function (index,html) {
       return cellStatus;
     });
+  }
+  $(document).on('mouseover','.farmThing',function(e) {
+    thisCell = $(".farmThing").index(this);
+    farmOn = 1;
+    cellStatusSet(thisCell);
     $('#cellStatus').show();
   });
   $(document).on('mouseout','.farmThing',function(e) {
+    farmOn = 0;
     $('#cellStatus').hide();
   });
   $(document).on('click','.farmThing',function() {
     thisCell = $(".farmThing").index(this);
     thisPoint = Math.floor((thisCell-9)/9)*7+thisCell%9-1;
     farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
-    if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
+    if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
+      seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
+      if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
+        plantInventory[seedNum]++;
+        exp += 5*2**seedNum;
+        plantPlantedSeed[mapNow][thisPoint] = 0;
+        plantPlantedTime[mapNow][thisPoint] = 0;
+        displayInventory();
+      }
+    } else if (toolSel == 2) {
+      if (handType == 1) {
+        if (coin >= 100*3**pondCount[mapNow] && tiles[mapNow][thisPoint] == 0 && maps[mapNow][thisPoint] >= 1) {
+          coin -= 100*3**pondCount[mapNow];
+          pondCount[mapNow]++;
+          tiles[mapNow][thisPoint] = 15;
+        }
+      } else if (handType == 2 && maps[mapNow][thisPoint] >= 1 && plantPlantedSeed[mapNow][thisPoint] == 0 && (1 <= tiles[mapNow][thisPoint] && tiles[mapNow][thisPoint] < 15)) {
+        plantPlantedSeed[mapNow][thisPoint] = handSel+1;
+        plantPlantedTime[mapNow][thisPoint] = new Date().getTime();
+      }
+    } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4 && gateKey[0] == 1) {
         if (1 == 1) {
           alert('Comming Soon...');
@@ -261,12 +385,18 @@ $(function (){
         if (hoeUsed[mapNow][thisPoint] == 0 && opening == 0 && toolSel == 1) {
           opening = 1;
           hoeUsed[mapNow][thisPoint] = new Date().getTime();
+        } else if (hoeUsed[mapNow][thisPoint] != 0 && opening != 0) {
+          opening = 0;
+          hoeUsed[mapNow][thisPoint] = 0;
         }
       }
     } else if ((thisPoint >= 7 && maps[mapNow][thisPoint-7] >= 1) || (thisPoint <= 41 && maps[mapNow][thisPoint+7] >= 1) || (thisPoint%7 != 0 && maps[mapNow][thisPoint-1] >= 1) || ((thisPoint+1)%7 != 0 && maps[mapNow][thisPoint+1] >= 1)) {
       if (pickaxeUsed[mapNow][thisPoint] == 0 && opening == 0 && toolSel == 0) {
         opening = 1;
         pickaxeUsed[mapNow][thisPoint] = new Date().getTime();
+      } else if (pickaxeUsed[mapNow][thisPoint] != 0 && opening != 0) {
+        opening = 0;
+        pickaxeUsed[mapNow][thisPoint] = 0;
       }
     }
     displayMap();
@@ -299,11 +429,48 @@ $(function (){
       return shopName[shopPage];
     });
   });
+  $(document).on('click','#creatureThing > span',function() {
+    indexSel = $("#creatureThing > span").index(this);
+    handType = 1;
+    switch (indexSel) {
+      case 0:
+        handSel = 1;
+        break;
+      default:
+        alert('error!');
+    }
+  });
+  $(document).on('click','#seedThing > span:not(.reqN)',function() {
+    handType = 2;
+    handSel = $("#seedThing > span").index(this);
+  });
+  $(document).on('click','.inventoryItem',function() {
+    indexThis = $(".inventoryItem").index(this);
+    plantIndex = 0;
+    for (var i = 0; i < plantInventory.length; i++) {
+      if (plantInventory[i] >= 1) {
+        if (plantIndex == indexThis) {
+          plantSelected = i;
+          break;
+        } else {
+          plantIndex++;
+        }
+      }
+    }
+    plantInventory[plantSelected]--;
+    coin += plantSellPrice[plantSelected];
+    displayInventory();
+  });
 
   setInterval( function (){
     displayMap();
+    displayPlayer();
+    displayShop();
     gameSave();
-  }, 1000);
+    if (farmOn == 1) {
+      cellStatusSet(thisCell);
+    }
+  }, 100);
 
   for (var i = 1; i < 10; i++) {
     for (var j = 1; j < 10; j++) {
@@ -329,4 +496,6 @@ $(function (){
   $("#warpShop > div:eq(0)").show();
   gameLoad();
   displayMap();
+  displayInventory();
+  levelUp();
 });
