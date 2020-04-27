@@ -206,11 +206,11 @@ $(function (){
       }
     } else if ((thisPoint >= 7 && maps[mapNow][thisPoint-7] >= 1) || (thisPoint <= 41 && maps[mapNow][thisPoint+7] >= 1) || (thisPoint%7 != 0 && maps[mapNow][thisPoint-1] >= 1) || ((thisPoint+1)%7 != 0 && maps[mapNow][thisPoint+1] >= 1)) {
       if (pickaxeUsed[mapNow][thisPoint] != 0) {
-        cellStatus += 'Block<br>Making grass field!<br>(' + timeNotation((pickaxeUsed[mapNow][thisPoint]+(((farFromCenter-1)+1)**6*10000)/(upgradeBought[0]**2+1))-timeNow) + ')';
+        cellStatus += 'Block<br>Making grass field!<br>(' + timeNotation((pickaxeUsed[mapNow][thisPoint]+(((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1))-timeNow) + ')';
       } else if (opening == 1) {
         cellStatus += 'Already working!<br>';
       } else {
-        cellStatus += 'Block<br>Click to make grass field!<br>(Piakaxe ' + timeNotation((((farFromCenter-1)+1)**6*10000)/(upgradeBought[0]**2+1)) + ')';
+        cellStatus += 'Block<br>Click to make grass field!<br>(Piakaxe ' + timeNotation((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1)) + ')';
       }
     }
     if (cellStatus == '') {
