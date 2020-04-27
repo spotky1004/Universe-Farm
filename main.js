@@ -104,14 +104,14 @@ $(function (){
     screenWidth = $(window).width();
     screenHeight = $(window).height();
     changed = 0;
-    if (screenWidth >= screenHeight && screenWidthBef != screenWidth) {
+    if (screenWidth >= screenHeight) {
       blankSpace = (screenWidth-screenHeight)/2-0.5;
       $('#farm').css('left', blankSpace + 'px');
       $('#farm').css('top','5vh');
       $('#farm').css('width','90vh');
       $('#farm').css('height','90vh');
       changed++;
-    } else if (screenHeightBef != screenHeight) {
+    } else {
       blankSpace = (screenHeight-screenWidth)/2-0.5;
       $('#farm').css('left','5vw');
       $('#farm').css('top', blankSpace + 'px');
