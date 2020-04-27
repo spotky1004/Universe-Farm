@@ -499,6 +499,7 @@ $(function (){
   $("#warpShop > div").hide();
   $("#warpShop > div:eq(0)").show();
   gameLoad();
+  gameSave();
   displayMap();
   displayInventory();
   levelUp();
