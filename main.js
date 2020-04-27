@@ -172,7 +172,6 @@ $(function (){
               tileName = 'Resource/Motion/f' + blockStatus + '.png';
             }
           } else if (k == 2) {
-            tileName = tileImageThing[things[mapNow][thisPoint]];
             if (plantPlantedTime[mapNow][thisPoint] != 0) {
               seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
               blockStatus = Math.floor((1-((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))*(plantLevels[seedNum]-1))+1;
@@ -180,6 +179,8 @@ $(function (){
                 plantPlantedTime[mapNow][thisPoint] = timeNow-(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1));
               }
               tileName = 'Resource/Plant/' + (seedNum+1) + '-' + blockStatus + '.png';
+            } else {
+              tileName = 'Resource/trans.png';
             }
           }
           $('#l' + i + 'C' + j + 'Z' + k).css('background-image', 'url(' + tileName + ')');
