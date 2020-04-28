@@ -15,6 +15,7 @@ $(function (){
   opening = 0;
   farming = 0;
   farmOn = 0;
+  breakConfrim = 0;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
   debugStr = '';
@@ -308,7 +309,11 @@ $(function (){
         }
       } else if (tiles[mapNow][thisPoint] >= 15) {
         if (tiles[mapNow][thisPoint] <= 17) {
-          cellStatus += 'Pond Lv.' + (tiles[mapNow][thisPoint]-14) + '<br>Click to upgrade/destory!<br>(Hand/Pickaxe)<br>Cost: ' + notation(100*3**pondCount[mapNow]);
+          if (breakConfrim == 0) {
+            cellStatus += 'Pond Lv.' + (tiles[mapNow][thisPoint]-14) + '<br>Click to upgrade/destory!<br>(Hand/Pickaxe)<br>Cost: ' + notation(100*3**pondCount[mapNow]);
+          } else {
+            cellStatus += 'Pond Lv.' + (tiles[mapNow][thisPoint]-14) + '<br>Click one more time to break<br>';
+          }
         } else {
           cellStatus += 'Pond Lv.Max<br>Click to destory!<br>(Pickaxe)<br>';
         }
@@ -337,6 +342,7 @@ $(function (){
   });
   $(document).on('mouseout','.farmThing',function(e) {
     farmOn = 0;
+    breakConfrim = 0;
     $('#cellStatus').hide();
   });
   $(document).on('click','.farmThing',function() {
@@ -345,9 +351,13 @@ $(function (){
     farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
     if (tiles[mapNow][thisPoint] >= 15) {
       if (toolSel == 0) {
-        coin -= 50*3**(pondCount[mapNow]-1);
-        pondCount[mapNow] -= tiles[mapNow][thisPoint]-14;
-        tiles[mapNow][thisPoint] = 0
+        if (breakConfrim == 1) {
+          coin -= 50*3**(pondCount[mapNow]-1);
+          pondCount[mapNow] -= tiles[mapNow][thisPoint]-14;
+          tiles[mapNow][thisPoint] = 0;
+        } else {
+          breakConfrim++;
+        }
       } else if (toolSel == 2 && coin >= 100*3**pondCount[mapNow] && maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] <= 17) {
         coin -= 100*3**pondCount[mapNow];
         pondCount[mapNow]++;
