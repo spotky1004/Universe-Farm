@@ -315,7 +315,11 @@ $(function (){
             cellStatus += 'Pond Lv.' + (tiles[mapNow][thisPoint]-14) + '<br>Click one more time to break<br>';
           }
         } else {
-          cellStatus += 'Pond Lv.Max<br>Click to destory!<br>(Pickaxe)<br>';
+          if (breakConfrim == 0) {
+            cellStatus += 'Pond Lv.Max<br>Click to destory!<br>(Pickaxe)<br>';
+          } else {
+            cellStatus += 'Pond Lv.Max<br>Click one more time to break<br>';
+          }
         }
       }
     } else if ((thisPoint >= 7 && maps[mapNow][thisPoint-7] >= 1) || (thisPoint <= 41 && maps[mapNow][thisPoint+7] >= 1) || (thisPoint%7 != 0 && maps[mapNow][thisPoint-1] >= 1) || ((thisPoint+1)%7 != 0 && maps[mapNow][thisPoint+1] >= 1)) {
@@ -352,7 +356,7 @@ $(function (){
     if (tiles[mapNow][thisPoint] >= 15) {
       if (toolSel == 0) {
         if (breakConfrim == 1) {
-          coin -= 50*3**(pondCount[mapNow]-1);
+          coin += 50*3**(pondCount[mapNow]-1);
           pondCount[mapNow] -= tiles[mapNow][thisPoint]-14;
           tiles[mapNow][thisPoint] = 0;
         } else {
@@ -509,6 +513,7 @@ $(function (){
     displayMap();
     displayPlayer();
     displayShop();
+    bugFix();
     if (farmOn == 1) {
       cellStatusSet(thisCell);
     }
@@ -556,4 +561,9 @@ function gameReset() {
   }
   localStorage.setItem('saveFile', JSON.stringify(saveFile));
   location.reload();
+}
+function bugFix() {
+  if (coin < 0) {
+    coin = 0;
+  }
 }
