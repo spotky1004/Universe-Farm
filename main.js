@@ -53,48 +53,17 @@ $(function (){
     }
   }
   function gameSave() {
-    gameSave1();
-    gameSave2();
-  }
-  function gameSave1() {
-    var date = new Date();
-    date.setDate(date.getDate() + 2000);
-    var willCookie = "";
-    willCookie += "saveData=";
-    saveFile = {};
     for (var i = 0; i < varData.length; i++) {
       saveFile[i] = eval(varData[i]);
     }
-    willCookie += JSON.stringify(saveFile);
-    willCookie += ";expires=" + date.toUTCString();
-    document.cookie = willCookie;
-  }
-  function gameSave2() {
-    var date = new Date();
-    date.setDate(date.getDate() + 2000);
-    var willCookie = "";
-    willCookie += "saveData2=";
-    saveFile = {};
-    for (var i = 0; i < varData2.length; i++) {
-      saveFile[i] = eval(varData2[i]);
-    }
-    willCookie += JSON.stringify(saveFile);
-    willCookie += ";expires=" + date.toUTCString();
-    document.cookie = willCookie;
+    localStorage.setItem('saveFile', SON.stringify(saveFile));
   }
   function gameLoad() {
-    var cookies = document.cookie.split(";");
-    for(var i in cookies) {
-      if(cookies[i].search('saveData') != -1) {
-        const savedFile = JSON.parse(decodeURIComponent(cookies[i].replace('saveData' + "=", "").replace('saveData2' + "=", "")));
-        console.log(savedFile);
-        debugStr = savedFile;
-        dataCopy = JSON.parse(JSON.stringify(resetData));
-        Object.assign(dataCopy, savedFile);
-        for (var i = 0; i < varData.length; i++) {
-          this[varData[i]] = dataCopy[i];
-        }
-      }
+    savedFile = JSON.parse(localStorage.getItem('saveFile'));
+    dataCopy = JSON.parse(JSON.stringify(resetData));
+    Object.assign(dataCopy, savedFile);
+    for (var i = 0; i < varData.length; i++) {
+      this[varData[i]] = dataCopy[i];
     }
   }
   function displayPlayer() {

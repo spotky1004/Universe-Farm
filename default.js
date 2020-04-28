@@ -9,9 +9,7 @@ standardNotation3 = [
 ];
 varData = [
   'maps', 'tiles', 'pickaxeUsed', 'hoeUsed', 'plantPlantedTime',
-  'plantInventory', 'upgradeBought', 'notationForm', 'coin', 'dia'
-];
-varData2 = [
+  'plantInventory', 'upgradeBought', 'notationForm', 'coin', 'dia',
   'level', 'exp', 'expNeed', 'mapNow', 'opening',
   'pondCount', 'gateKey', 'plantPlantedSeed', 'farming'
 ];
@@ -314,20 +312,18 @@ resetData = {
   7: 0,
   8: 0,
   9: 0,
-};
-resetData2 = {
-  0: 1,
-  1: 0,
-  2: 10,
-  3: 0,
-  4: 0,
-  5: [
+  10: 1,
+  11: 0,
+  12: 10,
+  13: 0,
+  14: 0,
+  15: [
     0, 0, 0, 0, 0, 0
   ],
-  6: [
+  16: [
     0, 0, 0, 0, 0, 0
   ],
-  7: [
+  17: [
     [
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,
