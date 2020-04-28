@@ -345,6 +345,7 @@ $(function (){
     farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
     if (tiles[mapNow][thisPoint] >= 15) {
       if (toolSel == 0) {
+        coin -= 50*3**(pondCount[mapNow]-1);
         pondCount[mapNow] -= tiles[mapNow][thisPoint]-14;
         tiles[mapNow][thisPoint] = 0
       } else if (toolSel == 2 && coin >= 100*3**pondCount[mapNow] && maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] <= 17) {
