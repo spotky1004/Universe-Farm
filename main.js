@@ -13,6 +13,7 @@ $(function (){
   handType = 0;
   handSel = 0;
   opening = 0;
+  farming = 0;
   farmOn = 0;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
@@ -416,11 +417,11 @@ $(function (){
       if (tiles[mapNow][thisPoint] != 0) {
         cellStatus += 'Farm Lv.' + tiles[mapNow][thisPoint] + '<br>Select seed or creature and Click!';
       } else if (maps[mapNow][thisPoint] >= 1) {
-        if (hoeUsed[mapNow][thisPoint] == 0 && opening == 0 && toolSel == 1) {
-          opening = 1;
+        if (hoeUsed[mapNow][thisPoint] == 0 && farming == 0 && toolSel == 1) {
+          farming = 1;
           hoeUsed[mapNow][thisPoint] = new Date().getTime();
-        } else if (hoeUsed[mapNow][thisPoint] != 0 && opening != 0) {
-          opening = 0;
+        } else if (hoeUsed[mapNow][thisPoint] != 0 && farming != 0) {
+          farming = 0;
           hoeUsed[mapNow][thisPoint] = 0;
         }
       }

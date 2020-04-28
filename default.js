@@ -13,7 +13,7 @@ varData = [
 ];
 varData2 = [
   'level', 'exp', 'expNeed', 'mapNow', 'opening',
-  'pondCount', 'gateKey', 'plantPlantedSeed'
+  'pondCount', 'gateKey', 'plantPlantedSeed', 'farming'
 ];
 resetData = {
   0: [
