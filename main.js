@@ -579,4 +579,10 @@ function bugFix() {
   if (coin < 0) {
     coin = 0;
   }
+  if (dia < 0) {
+    dia = 0;
+  }
+  if (pondCount[mapNow] < 0) {
+    pondCount[mapNow] = 0;
+  }
 }
