@@ -90,6 +90,7 @@ $(function (){
     for(var i in cookies) {
       if(cookies[i].search('saveData') != -1) {
         const savedFile = JSON.parse(decodeURIComponent(cookies[i].replace('saveData' + "=", "").replace('saveData2' + "=", "")));
+        console.log(savedFile);
         dataCopy = JSON.parse(JSON.stringify(resetData));
         Object.assign(dataCopy, savedFile);
         for (var i = 0; i < varData.length; i++) {
