@@ -53,6 +53,7 @@ $(function (){
     }
   }
   function gameSave() {
+    saveFile = [];
     for (var i = 0; i < varData.length; i++) {
       saveFile[i] = eval(varData[i]);
     }
