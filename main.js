@@ -57,7 +57,7 @@ $(function (){
     for (var i = 0; i < varData.length; i++) {
       saveFile[i] = eval(varData[i]);
     }
-    localStorage.setItem('saveFile', SON.stringify(saveFile));
+    localStorage.setItem('saveFile', JSON.stringify(saveFile));
   }
   function gameLoad() {
     savedFile = JSON.parse(localStorage.getItem('saveFile'));
