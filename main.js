@@ -208,8 +208,24 @@ $(function (){
   }
   function displayShop() {
     $('#creatureThing > span:eq(0)').html(function (index,html) {
-      return 'Pond<br>Price: ' + notation(100*3**pondCount[mapNow]);
+      return 'Pond<br>' + notation(100*3**pondCount[mapNow]) + ' G';
     });
+    upgradeCost = [
+      100*3**upgradeBought[0],
+      100*9**upgradeBought[1],
+      100*33**upgradeBought[2]
+    ];
+    for (var i = 0; i < 3; i++) {
+      $('.upgradeThing:eq(' + i + ')').attr({
+        'class' : 'upgradeThing upgrade' + ((coin >= upgradeCost[i]) ? 'Y' : 'N')
+      });
+      $('.upgradeThing:eq(' + i + ') > div:eq(0) > span').html(function (index,html) {
+        return upgradeBought[i];
+      });
+      $('.upgradeThing:eq(' + i + ') > span:eq(1)').html(function (index,html) {
+        return notation(upgradeCost[i]) + ' G';
+      });
+    }
   }
   function displayInventory() {
     $('#innerInventory').html(function (index,html) {
@@ -248,7 +264,7 @@ $(function (){
           $('<span>').addClass('handBlock').addClass('reqN').appendTo('#seedThing');
         }
         $("#seedThing > span:eq(" + i + ")").attr({
-            'style' : 'background-image: url(Resource/Plant/' + (i+1) + '-1.png)'
+          'style' : 'background-image: url(Resource/Plant/' + (i+1) + '-1.png)'
         });
         $('#seedThing > span:eq(' + i + ')').html(function (index,html) {
           return 'req: ' + plantLvReq[i] + 'Lv';
@@ -282,7 +298,7 @@ $(function (){
           seedNum = handSel;
           cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand ' + timeNotation(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)) + ')';
         } else {
-          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand)';
+          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click/destory!<br>(Hand/Hoe)';
         }
       } else if (maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
         if (hoeUsed[mapNow][thisPoint] != 0) {
@@ -291,7 +307,11 @@ $(function (){
           cellStatus += 'Grass Field<br>Click to make farm/make!<br>(Hoe ' + timeNotation(600000/(upgradeBought[1]**2+1)) + '/Hand)';
         }
       } else if (tiles[mapNow][thisPoint] >= 15) {
-        cellStatus += 'Pond Lv.' + (tiles[mapNow][thisPoint]-14) + '<br>Click to upgrade/destory!<br>(Hand/Pickaxe)';
+        if (tiles[mapNow][thisPoint] <= 17) {
+          cellStatus += 'Pond Lv.' + (tiles[mapNow][thisPoint]-14) + '<br>Click to upgrade/destory!<br>(Hand/Pickaxe)<br>Cost: ' + notation(100*3**pondCount[mapNow]);
+        } else {
+          cellStatus += 'Pond Lv.Max<br>Click to destory!<br>(Pickaxe)<br>';
+        }
       }
     } else if ((thisPoint >= 7 && maps[mapNow][thisPoint-7] >= 1) || (thisPoint <= 41 && maps[mapNow][thisPoint+7] >= 1) || (thisPoint%7 != 0 && maps[mapNow][thisPoint-1] >= 1) || ((thisPoint+1)%7 != 0 && maps[mapNow][thisPoint+1] >= 1)) {
       if (pickaxeUsed[mapNow][thisPoint] != 0) {
@@ -323,11 +343,23 @@ $(function (){
     thisCell = $(".farmThing").index(this);
     thisPoint = Math.floor((thisCell-9)/9)*7+thisCell%9-1;
     farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
-    if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
+    if (tiles[mapNow][thisPoint] >= 15) {
+      if (toolSel == 0) {
+        pondCount[mapNow] -= tiles[mapNow][thisPoint]-14;
+        tiles[mapNow][thisPoint] = 0
+      } else if (toolSel == 2 && coin >= 100*3**pondCount[mapNow] && maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] <= 17) {
+        coin -= 100*3**pondCount[mapNow];
+        pondCount[mapNow]++;
+        tiles[mapNow][thisPoint]++;
+      }
+    } else if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
       seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
       if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
         plantInventory[seedNum]++;
         exp += 5*2**seedNum;
+        if (Math.random() < upgradeBought[2]/100) {
+          dia += 2**plantPlantedSeed[mapNow][thisPoint];
+        }
         plantPlantedSeed[mapNow][thisPoint] = 0;
         plantPlantedTime[mapNow][thisPoint] = 0;
         displayInventory();
@@ -343,6 +375,9 @@ $(function (){
         plantPlantedSeed[mapNow][thisPoint] = handSel+1;
         plantPlantedTime[mapNow][thisPoint] = new Date().getTime();
       }
+    } else if (toolSel == 1 && maps[mapNow][thisPoint] >= 1 && (1 <= tiles[mapNow][thisPoint] && tiles[mapNow][thisPoint] < 15)) {
+      tiles[mapNow][thisPoint] = 0;
+      hoeUsed[mapNow][thisPoint] = 0;
     } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4 && gateKey[0] == 1) {
         if (1 == 1) {
@@ -452,12 +487,17 @@ $(function (){
     coin += plantSellPrice[plantSelected];
     displayInventory();
   });
+  $(document).on('click','#innerUpgrade > div:not(.upgradeN)',function() {
+    indexThis = $("#innerUpgrade > div").index(this);
+    coin -= upgradeCost[indexThis];
+    upgradeBought[indexThis]++;
+    displayShop();
+  });
 
   setInterval( function (){
     displayMap();
     displayPlayer();
     displayShop();
-    gameSave();
     if (farmOn == 1) {
       cellStatusSet(thisCell);
     }
@@ -495,3 +535,14 @@ $(function (){
   displayInventory();
   levelUp();
 });
+function gameReset() {
+  for (var i = 0; i < varData.length; i++) {
+    this[varData[i]] = resetData[i];
+  }
+  saveFile = [];
+  for (var i = 0; i < varData.length; i++) {
+    saveFile[i] = eval(varData[i]);
+  }
+  localStorage.setItem('saveFile', JSON.stringify(saveFile));
+  location.reload();
+}
