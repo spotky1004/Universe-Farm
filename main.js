@@ -131,7 +131,7 @@ $(function (){
             maps[mapNow][thisPoint] = 1;
           }
           if (tiles[mapNow][thisPoint] == 0 && hoeUsed[mapNow][thisPoint] < timeNow-(600000/(upgradeBought[1]**2+1)) && hoeUsed[mapNow][thisPoint] != 0) {
-            opening = 0;
+            farming = 0;
             tiles[mapNow][thisPoint] = 5;
           }
           if (k == 0) {
