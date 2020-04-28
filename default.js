@@ -8,10 +8,12 @@ standardNotation3 = [
   'Dc', 'Vg', 'Tg', 'Qag', 'Qig', 'Sxg', 'Spg', 'Ocg', 'Nog', 'Ce'
 ];
 varData = [
-  'maps', 'tiles', 'pickaxeUsed', 'hoeUsed',
-  'plantPlantedTime', 'plantInventory', 'upgradeBought', 'notationForm', 'coin',
-  'dia', 'level', 'exp', 'expNeed', 'mapNow',
-  'opening', 'pondCount', 'gateKey', 'plantPlantedSeed'
+  'maps', 'tiles', 'pickaxeUsed', 'hoeUsed', 'plantPlantedTime',
+  'plantInventory', 'upgradeBought', 'notationForm', 'coin', 'dia'
+];
+varData2 = [
+  'level', 'exp', 'expNeed', 'mapNow', 'opening',
+  'pondCount', 'gateKey', 'plantPlantedSeed'
 ];
 resetData = {
   0: [
@@ -312,18 +314,20 @@ resetData = {
   7: 0,
   8: 0,
   9: 0,
-  10: 1,
-  11: 0,
-  12: 10,
-  13: 0,
-  14: 0,
-  15: [
+};
+resetData2 = {
+  0: 1,
+  1: 0,
+  2: 10,
+  3: 0,
+  4: 0,
+  5: [
     0, 0, 0, 0, 0, 0
   ],
-  16: [
+  6: [
     0, 0, 0, 0, 0, 0
   ],
-  17: [
+  7: [
     [
       0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0,

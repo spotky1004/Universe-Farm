@@ -51,6 +51,10 @@ $(function (){
     }
   }
   function gameSave() {
+    gameSave1();
+    gameSave2();
+  }
+  function gameSave1() {
     var date = new Date();
     date.setDate(date.getDate() + 2000);
     var willCookie = "";
@@ -63,7 +67,24 @@ $(function (){
     willCookie += ";expires=" + date.toUTCString();
     document.cookie = willCookie;
   }
+  function gameSave2() {
+    var date = new Date();
+    date.setDate(date.getDate() + 2000);
+    var willCookie = "";
+    willCookie += "saveData2=";
+    saveFile = {};
+    for (var i = 0; i < varData.length; i++) {
+      saveFile[i] = eval(varData2[i]);
+    }
+    willCookie += JSON.stringify(saveFile);
+    willCookie += ";expires=" + date.toUTCString();
+    document.cookie = willCookie;
+  }
   function gameLoad() {
+    gameLoad1();
+    gameLoad2();
+  }
+  function gameLoad1() {
     var cookies = document.cookie.split(";");
     for(var i in cookies) {
       if(cookies[i].search('saveData') != -1) {
@@ -73,7 +94,19 @@ $(function (){
         for (var i = 0; i < varData.length; i++) {
           this[varData[i]] = dataCopy[i];
         }
-        debugStr = dataCopy;
+      }
+    }
+  }
+  function gameLoad2() {
+    var cookies = document.cookie.split(";");
+    for(var i in cookies) {
+      if(cookies[i].search('saveData2') != -1) {
+        const savedFile = JSON.parse(decodeURIComponent(cookies[i].replace('saveData2' + "=", "")));
+        dataCopy = JSON.parse(JSON.stringify(resetData2));
+        Object.assign(dataCopy, savedFile);
+        for (var i = 0; i < varData2.length; i++) {
+          this[varData2[i]] = dataCopy[i];
+        }
       }
     }
   }
