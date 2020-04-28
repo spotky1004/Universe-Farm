@@ -73,7 +73,7 @@ $(function (){
     var willCookie = "";
     willCookie += "saveData2=";
     saveFile = {};
-    for (var i = 0; i < varData.length; i++) {
+    for (var i = 0; i < varData2.length; i++) {
       saveFile[i] = eval(varData2[i]);
     }
     willCookie += JSON.stringify(saveFile);
