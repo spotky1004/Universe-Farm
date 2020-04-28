@@ -89,8 +89,7 @@ $(function (){
     var cookies = document.cookie.split(";");
     for(var i in cookies) {
       if(cookies[i].search('saveData') != -1) {
-        console.log(decodeURIComponent(cookies[i].replace('saveData' + "=", "")));
-        const savedFile = JSON.parse(decodeURIComponent(cookies[i].replace('saveData' + "=", "")));
+        const savedFile = JSON.parse(decodeURIComponent(cookies[i].replace('saveData' + "=", "").replace('saveData2' + "=", "")));
         dataCopy = JSON.parse(JSON.stringify(resetData));
         Object.assign(dataCopy, savedFile);
         for (var i = 0; i < varData.length; i++) {
@@ -103,7 +102,7 @@ $(function (){
     var cookies = document.cookie.split(";");
     for(var i in cookies) {
       if(cookies[i].search('saveData2') != -1) {
-        const savedFile2 = JSON.parse(decodeURIComponent(cookies[i].replace('saveData2' + "=", "")));
+        const savedFile2 = JSON.parse(decodeURIComponent(cookies[i].replace('saveData' + "=", "").replace('saveData2' + "=", "")));
         dataCopy = JSON.parse(JSON.stringify(resetData2));
         Object.assign(dataCopy, savedFile2);
         for (var i = 0; i < varData2.length; i++) {
