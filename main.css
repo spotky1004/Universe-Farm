@@ -209,6 +209,23 @@
   border: 3px solid #38c94a;
   border-radius: 3px;
 }
+#goCraft {
+  position: absolute;
+  margin: 0 10px;
+  padding: 3px 10px;
+  bottom: 20vh;
+  font-size: 1.5em;
+  color: black;
+  background-color: rgba(217, 183, 121, 0.6);
+
+  transition: all 0.2s;
+}
+#goCraft:hover {
+  color: white;
+  background-color: rgba(217, 183, 121, 0.9);
+
+  transition: all 0.2s;
+}
 #shop {
   z-index: 100;
   position: absolute;
@@ -349,4 +366,75 @@
 .inventoryItem > span:nth-child(2) > div:nth-child(1) {
   margin-top: 0.7vh;
   background-color: rgba(255, 255, 255, 0.4);
+}
+#craftScreen {
+  height: 100vh;
+  width: 100vw;
+  background-color: #c79946;
+  #goGame
+
+}
+#goGame {
+  position: absolute;
+  margin: 0 10px;
+  padding: 3px 10px;
+  top: 60px;
+  font-size: 1.5em;
+  color: black;
+  background-color: rgba(199, 70, 70, 0.6);
+
+  transition: all 0.2s;
+}
+#goGame:hover {
+  background-color: rgba(199, 70, 70, 0.9);
+  color: white;
+
+  transition: all 0.2s;
+}
+#craftMenu {
+  position: absolute;
+  left: 30vw;
+  top: 60px;
+  width: 40vw;
+  height: 20px;
+}
+#craftMenu > span {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  text-align: center;
+  font-size: 15pt;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+
+  transition: all 0.2s;
+}
+#craftMenu > span:hover {
+  padding: 0 10px;
+  color: rgba(128, 128, 128, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
+
+  transition: all 0.2s;
+}
+#craftMenu > span:nth-child(1) {
+  left: 6.25%;
+}
+#craftMenu > span:nth-child(2) {
+  left: 37.5%;
+}
+#craftMenu > span:nth-child(3) {
+  left: 68.75%;
+}
+#craftInner {
+  margin: 13vh 3vh 5vh 3vh;
+  height: 83vh;
+  background-color: rgba(255, 255, 255, 0.2);
+
+  transition: all 0.2s;
+}
+#craftInner:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+
+  transition: all 0.2s;
 }

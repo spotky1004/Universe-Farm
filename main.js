@@ -521,6 +521,14 @@ $(function (){
     upgradeBought[indexThis]++;
     displayShop();
   });
+  $(document).on('click','#goCraft',function() {
+    $("#gameScreen").hide();
+    $("#craftScreen").show();
+  });
+  $(document).on('click','#goGame',function() {
+    $("#gameScreen").show();
+    $("#craftScreen").hide();
+  });
 
   setInterval( function (){
     displayMap();
@@ -558,6 +566,7 @@ $(function (){
   $('#cellStatus').hide();
   $("#warpShop > div").hide();
   $("#warpShop > div:eq(0)").show();
+  $("#craftScreen").hide();
   gameLoad();
   gameSave();
   displayMap();
