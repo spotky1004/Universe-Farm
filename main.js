@@ -54,6 +54,14 @@ $(function (){
       return (num/1000).toFixed(1) + ' s';
     }
   }
+  function copyToClipboard(val) {
+    var t = document.createElement("textarea");
+    document.body.appendChild(t);
+    t.value = val;
+    t.select();
+    document.execCommand('copy');
+    document.body.removeChild(t);
+  }
   function gameSave() {
     saveFile = [];
     for (var i = 0; i < varData.length; i++) {
@@ -545,12 +553,61 @@ $(function (){
     displayShop();
   });
   $(document).on('click','#goCraft',function() {
-    $("#gameScreen").hide();
+    $("#warpAll > div:not(:eq(0))").hide();
     $("#craftScreen").show();
   });
-  $(document).on('click','#goGame',function() {
+  $(document).on('click','#goOption',function() {
+    $("#warpAll > div:not(:eq(0))").hide();
+    $("#optionScreen").show();
+  });
+  $(document).on('click','.goGame',function() {
+    $("#warpAll > div:not(:eq(0))").hide();
     $("#gameScreen").show();
-    $("#craftScreen").hide();
+  });
+  $(document).on('click','#optionInnerWarp > div',function() {
+    indexThis = $("#optionInnerWarp > div").index(this);
+    switch (indexThis) {
+      case 0:
+        saveFile = {};
+        for (var i = 0; i < varData.length; i++) {
+          saveFile[i] = eval(varData[i]);
+        }
+        copyToClipboard(btoa(JSON.stringify(saveFile)));
+        $('#optionInnerWarp > div:eq(0)').html(function (index,html) {
+          return 'Exported Game!';
+        });
+        setTimeout(function(){
+          $('#optionInnerWarp > div:eq(0)').html(function (index,html) {
+            return 'Export Game';
+          });
+        }, 1500);
+        break;
+      case 1:
+        var inputedSaveN = prompt('Import Save', '');
+        var inputedSave = atob(inputedSaveN);
+        if (inputedSave != null && inputedSave != '') {
+          var cookies = document.cookie.split(";");
+          const savedFile = JSON.parse(inputedSave);
+          dataCopy = JSON.parse(JSON.stringify(resetData));
+          Object.assign(dataCopy, savedFile);
+          setTimeout(function(){
+            for (var i = 0; i < varData.length; i++) {
+              this[varData[i]] = dataCopy[i];
+            }
+            setTimeout(function(){
+              $('#optionInnerWarp > div:eq(1)').html(function (index,html) {
+                return 'Import Game';
+              });
+            }, 1500);
+          }, 0);
+          $('#optionInnerWarp > div:eq(1)').html(function (index,html) {
+            return 'Imported Game!';
+          });
+        }
+        break;
+      default:
+
+    }
   });
 
   setInterval( function (){
@@ -589,7 +646,8 @@ $(function (){
   $('#cellStatus').hide();
   $("#warpShop > div").hide();
   $("#warpShop > div:eq(0)").show();
-  $("#craftScreen").hide();
+  $("#warpAll > div:not(:eq(0))").hide();
+  $("#gameScreen").show();
   gameLoad();
   gameSave();
   displayMap();
