@@ -567,7 +567,6 @@ $(function (){
   $("#warpShop > div").hide();
   $("#warpShop > div:eq(0)").show();
   $("#craftScreen").hide();
-  alert('test');
   gameLoad();
   gameSave();
   displayMap();
