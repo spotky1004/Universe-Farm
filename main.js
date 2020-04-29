@@ -16,6 +16,7 @@ $(function (){
   farming = 0;
   farmOn = 0;
   breakConfrim = 0;
+  bulkSellCount = 1;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
   debugStr = '';
@@ -243,7 +244,7 @@ $(function (){
   }
   function displayInventory() {
     $('#innerInventory').html(function (index,html) {
-      return '';
+      return '<div id=bulkSell class=clearFix><span>x1</span><span>x10</span><span>x100</span><span>xMax</span></div>';
     });
     thingsHave = 0;
     for (var i = 0; i < plantInventory.length; i++) {
@@ -498,6 +499,23 @@ $(function (){
     handType = 2;
     handSel = $("#seedThing > span").index(this);
   });
+  $(document).on('click','#bulkSell > span',function() {
+    indexThis = $("#bulkSell > span").index(this);
+    switch (indexThis) {
+      case 0:
+        bulkSellCount = 1;
+        break;
+      case 1:
+        bulkSellCount = 10;
+        break;
+      case 2:
+        bulkSellCount = 100;
+        break;
+      case 3:
+        bulkSellCount = 1e10;
+        break;
+    }
+  });
   $(document).on('click','.inventoryItem',function() {
     indexThis = $(".inventoryItem").index(this);
     plantIndex = 0;
@@ -511,8 +529,13 @@ $(function (){
         }
       }
     }
-    plantInventory[plantSelected]--;
-    coin += plantSellPrice[plantSelected];
+    if (plantInventory[plantSelected] >= bulkSellCount) {
+      sellCount = bulkSellCount;
+    } else {
+      sellCount = plantInventory[plantSelected];
+    }
+    plantInventory[plantSelected] -= sellCount;
+    coin += plantSellPrice[plantSelected]*sellCount;
     displayInventory();
   });
   $(document).on('click','#innerUpgrade > div:not(.upgradeN)',function() {
