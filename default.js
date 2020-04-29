@@ -11,7 +11,7 @@ varData = [
   'maps', 'tiles', 'pickaxeUsed', 'hoeUsed', 'plantPlantedTime',
   'plantInventory', 'upgradeBought', 'notationForm', 'coin', 'dia',
   'level', 'exp', 'expNeed', 'mapNow', 'opening',
-  'pondCount', 'gateKey', 'plantPlantedSeed', 'farming'
+  'pondCount', 'gateKey', 'plantPlantedSeed', 'farming', 'bulkSellCount'
 ];
 resetData = {
   0: [
@@ -379,7 +379,8 @@ resetData = {
       0, 0, 0, 0, 0, 0, 0
     ]
   ],
-  18: 0
+  18: 0,
+  19: 1
 };
 maps = [
   [
