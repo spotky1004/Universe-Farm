@@ -755,6 +755,11 @@ $(function (){
           $('#optionInnerWarp > div:eq(1)').html(function (index,html) {
             return 'Imported Game!';
           });
+          displayMap();
+          displayShop();
+          displayCraft();
+          displayPlayer();
+          displayInventory();
         }
         break;
       default:
