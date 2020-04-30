@@ -836,17 +836,18 @@ craftMaxBulk = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
 craftName = [
- 'Fabric', 'Fertilizer', 'Iron Bar', 'Mineral Bar', 'Rainbow'
+ 'Fabric', 'Fertilizer', 'Iron Bar', 'Mineral Bar', 'Rainbow',
+ 'Mint Bait', 'Mineral Water', 'Energy', 'Battery', 'Overcharged Battery'
 ];
 craftLvReq = [
-  3, 4, 7, 10, 15
+  3, 4, 7, 10, 15,
+  17, 20, 22, 22, 22
 ];
 craftMaterialId = [
-  [1, 2, 0], [1, 2, 3], [4, 0, 201], [5, 0, 202], [6, 0, 202]
+  [1, 2, 0], [1, 2, 3], [4, 0, 201], [5, 0, 202], [6, 0, 202],
+  [8, 102, 0], [9, 104, 105], [10, 0, 201], [108, 103, 0], [109, 7, 201]
 ];
 craftMaterialQuantity = [
-  [5, 2, 0], [3, 3, 2], [5, 0, 5e4], [15, 0, 1e3], [50, 0, 1e4]
-];
-craftOutputQuantity = [
-  1, 3, 1, 1, 5
+  [5, 2, 0], [3, 3, 2], [5, 0, 5e4], [15, 0, 1e3], [50, 0, 1e4],
+  [5, 2, 0], [10, 3, 1], [10, 0, 5e15], [5, 10, 0], [3, 50, 3e20]
 ];

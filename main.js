@@ -176,7 +176,6 @@ $(function (){
                   tiles[mapNow][thisPoint] = 10;
                 }
               }
-
             }
             tileName = tileImageTile[tiles[mapNow][thisPoint]];
             if (maps[mapNow][thisPoint] != 1 && pickaxeUsed[mapNow][thisPoint] != 0) {
@@ -312,8 +311,8 @@ $(function (){
             imgPath[j] = 'Plant/' + (craftMaterialId[i][j]) + '-' + plantLevels[craftMaterialId[i][j]-1];
             maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
           } else if (craftMaterialId[i][j] <= 200) {
-            thingCount[j] = plantInventory[craftMaterialId[i][j]-101];
-            imgPath[j] = 'Material/' + (material[craftMaterialId[i][j]-101]+1);
+            thingCount[j] = material[craftMaterialId[i][j]-101];
+            imgPath[j] = 'Material/' + (craftMaterialId[i][j]-101+1);
             maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
           } else {
             if (craftMaterialId[i][j] == 201) {
@@ -678,7 +677,7 @@ $(function (){
         thingCount[j] = plantInventory[craftMaterialId[indexThis][j]-1];
         maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
       } else if (craftMaterialId[indexThis][j] <= 200) {
-        thingCount[j] = plantInventory[craftMaterialId[indexThis][j]-101];
+        thingCount[j] = material[craftMaterialId[indexThis][j]-101];
         maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
       } else {
         if (craftMaterialId[indexThis][j] == 201) {
