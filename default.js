@@ -834,7 +834,7 @@ craftName = [
  'Fabric', 'Fertilizer', 'Iron Bar', 'Mineral Bar', 'Rainbow'
 ];
 craftLvReq = [
-  3, 5, 11, 15, 17
+  3, 4, 7, 10, 15
 ];
 craftMaterialId = [
   [1, 2, 0], [1, 2, 3], [4, 0, 201], [5, 0, 202], [6, 0, 202]
