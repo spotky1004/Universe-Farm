@@ -750,7 +750,7 @@ plantLvReq = [
 ];
 plantSellPrice = [
   20, 80, 600, 1.5e3, 1.6e4, 1e10,
-  9.001e11, 3e13, 4e14, 9.8e15
+  9.001e11, 3e13, 4e14, 9.80665e15
 ];
 plantInventory = [
   0, 0, 0, 0, 0, 0,
