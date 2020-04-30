@@ -17,6 +17,7 @@ $(function (){
   farmOn = 0;
   breakConfrim = 0;
   bulkSellCount = 1;
+  bulkCraftCount = 1;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
   debugStr = '';
@@ -95,6 +96,7 @@ $(function (){
       level++;
       exp -= expNeed;
       levelUp();
+      displayCraft();
     }
     $("#levelProgress").attr({
       'value' : exp/expNeed
@@ -272,6 +274,96 @@ $(function (){
           return 'You own: ' + plantInventory[i];
         });
         thingsHave++;
+      }
+    }
+    thingsHave = 0;
+    for (var i = 0; i < material.length; i++) {
+      if (material[i] >= 1) {
+        $('<div>').addClass('inventoryItemMat').appendTo('#innerInventory');
+        $('<span>').appendTo('.inventoryItemMat:eq(' + thingsHave + ')');
+        $('<span>').appendTo('.inventoryItemMat:eq(' + thingsHave + ')');
+        $('<div>').appendTo('.inventoryItemMat:eq(' + thingsHave + ') > span:eq(1)');
+        $('.inventoryItemMat:eq(' + thingsHave + ') > span:eq(0)').attr({
+          'style' : 'background-image: url(Resource/Material/' + (i+1) + '.png)'
+        });
+        $('.inventoryItemMat:eq(' + thingsHave + ') > span:eq(1) > div:eq(0)').html(function (index,html) {
+          return 'You own: ' + material[i];
+        });
+        thingsHave++;
+      }
+    }
+  }
+  function displayCraft() {
+    $('#craftMaterial').html(function (index,html) {
+      return '<div id=bulkCraft class=clearFix><span>x1</span><span>x10</span><span>x100</span><span>xMax</span></div>';
+    });
+    thingsIndex = 0;
+    for (var i = 0; i < craftLvReq.length; i++) {
+      if (craftLvReq[i] <= level) {
+        maxBulk = [0, 0, 0];
+        thingCount = [0, 0, 0];
+        imgPath = ['', '', ''];
+        for (var j = 0; j < 3; j++) {
+          if (craftMaterialId[i][j] == 0) {
+            maxBulk[j] = 100000;
+          } else if (craftMaterialId[i][j] <= 100) {
+            thingCount[j] = plantInventory[craftMaterialId[i][j]-1];
+            imgPath[j] = 'Plant/' + (craftMaterialId[i][j]) + '-' + plantLevels[craftMaterialId[i][j]-1];
+            maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+          } else if (craftMaterialId[i][j] <= 200) {
+            thingCount[j] = plantInventory[craftMaterialId[i][j]-101];
+            imgPath[j] = 'Material/' + (material[craftMaterialId[i][j]-101]+1);
+            maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+          } else {
+            if (craftMaterialId[i][j] == 201) {
+              thingCount[j] = coin;
+              imgPath[j] = 'etc/coin';
+              maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+            } else if (craftMaterialId[i][j] == 202) {
+              thingCount[j] = dia;
+              imgPath[j] = 'etc/diamond';
+              maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+            }
+          }
+        }
+        if (Math.min(maxBulk[0], maxBulk[1], maxBulk[2]) != 0) {
+          $('<span>').addClass('craftBlock').addClass('craftY').appendTo('#craftMaterial');
+          craftMaxBulk[thingsIndex] = Math.min(maxBulk[0], maxBulk[1], maxBulk[2]);
+        } else {
+          $('<span>').addClass('craftBlock').addClass('craftN').appendTo('#craftMaterial');
+        }
+        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ')');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ')');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1)');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1)');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1)');
+        $('.craftBlock:eq(' + thingsIndex + ') > div:eq(0)').html(function (index,html) {
+          return craftName[thingsIndex] + ' (' + Math.min(bulkCraftCount, Math.min(maxBulk[0], maxBulk[1], maxBulk[2])) + ')';
+        });
+        $('.craftBlock:eq(' + thingsIndex + ') > div:eq(0)').attr({
+          'style' : 'background-image: url(Resource/Material/' + (thingsIndex+1) + '.png)'
+        });
+        for (var j = 0; j < 3; j++) {
+          $('<span>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ')');
+          if (thingCount[j] >= craftMaterialQuantity[i][j]) {
+            $('<p>').addClass('materialBack').addClass('materialY').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ')');
+          } else {
+            $('<p>').addClass('materialBack').addClass('materialN').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ')');
+          }
+          if (imgPath[j] != 0) {
+            $('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ') > span').attr({
+              'style' : 'background-image: url(Resource/' + imgPath[j] + '.png)'
+            });
+          }
+        }
+        $('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div > p').html(function (index,html) {
+          if (craftMaterialQuantity[i][index] != 0) {
+            return notation(thingCount[index]) + '/' + notation(craftMaterialQuantity[i][index]);
+          } else {
+            return '';
+          }
+        });
+        thingsIndex++;
       }
     }
   }
@@ -462,6 +554,7 @@ $(function (){
         pickaxeUsed[mapNow][thisPoint] = 0;
       }
     }
+    displayInventory();
     displayMap();
   });
   $(document).on('click','#tools > span',function() {
@@ -524,6 +617,24 @@ $(function (){
         break;
     }
   });
+  $(document).on('click','#bulkCraft > span',function() {
+    indexThis = $("#bulkCraft > span").index(this);
+    switch (indexThis) {
+      case 0:
+        bulkCraftCount = 1;
+        break;
+      case 1:
+        bulkCraftCount = 10;
+        break;
+      case 2:
+        bulkCraftCount = 100;
+        break;
+      case 3:
+        bulkCraftCount = 10000;
+        break;
+    }
+    displayCraft();
+  });
   $(document).on('click','.inventoryItem',function() {
     indexThis = $(".inventoryItem").index(this);
     plantIndex = 0;
@@ -551,6 +662,47 @@ $(function (){
     coin -= upgradeCost[indexThis];
     upgradeBought[indexThis]++;
     displayShop();
+  });
+  $(document).on('click','#craftMaterial > .craftBlock:not(.craftN)',function() {
+    indexThis = $("#craftMaterial > .craftBlock").index(this);
+    maxBulk = [0, 0, 0];
+    thingCount = [0, 0, 0];
+    for (var j = 0; j < 3; j++) {
+      if (craftMaterialId[indexThis][j] == 0) {
+        maxBulk[j] = 100000;
+      } else if (craftMaterialId[indexThis][j] <= 100) {
+        thingCount[j] = plantInventory[craftMaterialId[indexThis][j]-1];
+        maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
+      } else if (craftMaterialId[indexThis][j] <= 200) {
+        thingCount[j] = plantInventory[craftMaterialId[indexThis][j]-101];
+        maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
+      } else {
+        if (craftMaterialId[indexThis][j] == 201) {
+          thingCount[j] = coin;
+          maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
+        } else if (craftMaterialId[indexThis][j] == 202) {
+          thingCount[j] = dia;
+          maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
+        }
+      }
+    }
+    bulkCraftThis = Math.min(bulkCraftCount, Math.min(maxBulk[0], maxBulk[1], maxBulk[2]));
+    for (var j = 0; j < 3; j++) {
+      if (craftMaterialId[indexThis][j] <= 100) {
+        plantInventory[craftMaterialId[indexThis][j]-1] -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
+      } else if (craftMaterialId[indexThis][j] <= 200) {
+        material[craftMaterialId[indexThis][j]-101] -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
+      } else {
+        if (craftMaterialId[indexThis][j] == 201) {
+          coin -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
+        } else if (craftMaterialId[indexThis][j] == 202) {
+          dia -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
+        }
+      }
+    }
+    material[indexThis] += bulkCraftThis;
+    displayCraft();
+    displayInventory();
   });
   $(document).on('click','#goCraft',function() {
     $("#warpAll > div:not(:eq(0))").hide();
@@ -622,6 +774,9 @@ $(function (){
   setInterval( function (){
     gameSave();
   }, 1000);
+  setInterval( function (){
+    displayCraft();
+  }, 10000);
 
 
   for (var i = 1; i < 10; i++) {
@@ -647,11 +802,13 @@ $(function (){
   $("#warpShop > div").hide();
   $("#warpShop > div:eq(0)").show();
   $("#warpAll > div:not(:eq(0))").hide();
+  $("#craftInner > div:not(:eq(0))").hide();
   $("#gameScreen").show();
   gameLoad();
   gameSave();
   displayMap();
   displayInventory();
+  displayCraft();
   levelUp();
 });
 function gameReset() {
