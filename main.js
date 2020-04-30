@@ -153,25 +153,25 @@ $(function (){
               tiles[mapNow][thisPoint] = 5;
               if (thisPoint >= 7 && tiles[mapNow][thisPoint-7] > 14) {
                 tiles[mapNow][thisPoint] += tiles[mapNow][thisPoint-7]-14;
-                if (tiles[mapNow][thisPoint] >= 15) {
+                if (tiles[mapNow][thisPoint] >= 10) {
                   tiles[mapNow][thisPoint] = 10;
                 }
               }
               if (thisPoint <= 41 && tiles[mapNow][thisPoint+7] > 14) {
                 tiles[mapNow][thisPoint] += tiles[mapNow][thisPoint+7]-14;
-                if (tiles[mapNow][thisPoint] >= 15) {
+                if (tiles[mapNow][thisPoint] >= 10) {
                   tiles[mapNow][thisPoint] = 10;
                 }
               }
               if (thisPoint%7 != 0 && tiles[mapNow][thisPoint-1] > 14) {
                 tiles[mapNow][thisPoint] += tiles[mapNow][thisPoint-1]-14;
-                if (tiles[mapNow][thisPoint] >= 15) {
+                if (tiles[mapNow][thisPoint] >= 10) {
                   tiles[mapNow][thisPoint] = 10;
                 }
               }
               if ((thisPoint+1)%7 != 0 && tiles[mapNow][thisPoint+1] > 14) {
                 tiles[mapNow][thisPoint] += tiles[mapNow][thisPoint+1]-14;
-                if (tiles[mapNow][thisPoint] >= 15) {
+                if (tiles[mapNow][thisPoint] >= 10) {
                   tiles[mapNow][thisPoint] = 10;
                 }
               }
