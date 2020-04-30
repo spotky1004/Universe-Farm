@@ -745,8 +745,8 @@ plantName = [
   'Overloaded Vine', 'MintChoco Tree', 'Water Essence', 'Energy Essence'
 ];
 plantLvReq = [
-  1, 2, 4, 7, 10, 15,
-  17, 20, 25, 30
+  1, 2, 4, 7, 10, 13,
+  15, 17, 20, 22
 ];
 plantSellPrice = [
   20, 80, 600, 1.5e3, 1.6e4, 1e10,
