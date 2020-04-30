@@ -733,19 +733,24 @@ plantPlantedSeed = [
   ]
 ];
 plantLevels = [
-  7, 5, 9, 6, 7, 8
+  7, 5, 9, 6, 7, 8,
+  6, 9
 ];
 plantTime = [
-  60, 120, 500, 750, 300, 3600
+  60, 120, 500, 750, 300, 3600,
+  4500, 2000
 ];
 plantName = [
-  'Berry', 'Grape', 'Watermelon', 'Iron Berry', 'Mineral Fruit', 'Rainbow Sahrd'
+  'Berry', 'Grape', 'Watermelon', 'Iron Berry', 'Mineral Fruit', 'Rainbow Sahrd',
+  'Overloaded Vine', 'MintChoco Tree'
 ];
 plantLvReq = [
-  1, 2, 4, 7, 10, 15
+  1, 2, 4, 7, 10, 15,
+  17, 20
 ];
 plantSellPrice = [
-  20, 80, 600, 1.5e3, 1.6e4, 1e10
+  20, 80, 600, 1.5e3, 1.6e4, 1e10,
+  9.001e11, 3e13
 ];
 plantInventory = [
   0, 0, 0, 0, 0, 0,

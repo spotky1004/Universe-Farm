@@ -18,6 +18,7 @@ $(function (){
   breakConfrim = 0;
   bulkSellCount = 1;
   bulkCraftCount = 1;
+  bonusExp = 1;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
   debugStr = '';
@@ -485,7 +486,10 @@ $(function (){
       seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
       if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
         plantInventory[seedNum]++;
-        exp += 5*2**seedNum;
+        if (seedNum >= 6) {
+          bonusExp = 10*1.5**(seedNum-6);
+        }
+        exp += 5*2**seedNum*bonusExp;
         if (Math.random() < upgradeBought[2]/100) {
           dia += 2**plantPlantedSeed[mapNow][thisPoint];
         }
