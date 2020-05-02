@@ -22,6 +22,7 @@ $(function (){
   bonusExp = 1;
   rp = 0;
   matCanCraft = [];
+  exportCoolTime = 0;
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
   debugStr = '';
@@ -857,19 +858,22 @@ $(function (){
     indexThis = $("#optionInnerWarp > div").index(this);
     switch (indexThis) {
       case 0:
-        saveFile = {};
-        for (var i = 0; i < varData.length; i++) {
-          saveFile[i] = eval(varData[i]);
-        }
-        copyToClipboard(btoa(JSON.stringify(saveFile)));
-        $('#optionInnerWarp > div:eq(0)').html(function (index,html) {
-          return 'Exported Game!';
-        });
-        setTimeout(function(){
+        if (exportCoolTime < 0) {
+          exportCoolTime = 5;
+          saveFile = {};
+          for (var i = 0; i < varData.length; i++) {
+            saveFile[i] = eval(varData[i]);
+          }
+          copyToClipboard(btoa(JSON.stringify(saveFile)));
           $('#optionInnerWarp > div:eq(0)').html(function (index,html) {
-            return 'Export Game';
+            return 'Copied to Clipboard!';
           });
-        }, 1500);
+          setTimeout(function(){
+            $('#optionInnerWarp > div:eq(0)').html(function (index,html) {
+              return 'Export Game<textarea  rows="1">' + btoa(JSON.stringify(saveFile)) + '<textarea>';
+            });
+          }, 1500);
+        }
         break;
       case 1:
         var inputedSaveN = prompt('Import Save', '');
@@ -981,6 +985,7 @@ $(function (){
   }, 100);
   setInterval( function (){
     gameSave();
+    exportCoolTime--;
   }, 1000);
   setInterval( function (){
     displayCraft();
