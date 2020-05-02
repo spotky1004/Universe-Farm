@@ -59,14 +59,6 @@ $(function (){
       return (num/1000).toFixed(1) + ' s';
     }
   }
-  function copyToClipboard(val) {
-    var t = document.createElement("textarea");
-    document.body.appendChild(t);
-    t.value = val;
-    t.select();
-    document.execCommand('copy');
-    document.body.removeChild(t);
-  }
   function gameSave() {
     saveFile = [];
     for (var i = 0; i < varData.length; i++) {
@@ -1042,4 +1034,12 @@ function bugFix() {
   if (pondCount[mapNow] < 0) {
     pondCount[mapNow] = 0;
   }
+}
+function copyToClipboard(val) {
+  var t = document.createElement("textarea");
+  document.body.appendChild(t);
+  t.value = val;
+  t.select();
+  document.execCommand('copy');
+  document.body.removeChild(t);
 }
