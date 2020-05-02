@@ -958,10 +958,10 @@ $(function (){
         displayMachine();
         switch (indexMach) {
           case 0:
-            machineStatus[i] = [[0], [0, 0]];
+            machineStatus[indexMach] = [[0], [0, 0]];
             break;
           case 1:
-            machineStatus[i] = [[0, 0], [0, 0]];
+            machineStatus[indexMach] = [[0, 0], [0, 0]];
             break;
         }
       }
