@@ -59,6 +59,14 @@ $(function (){
       return (num/1000).toFixed(1) + ' s';
     }
   }
+  function copyToClipboard(val) {
+    var t = document.createElement("textarea");
+    document.body.appendChild(t);
+    t.value = val;
+    t.select();
+    document.execCommand('copy');
+    document.body.removeChild(t);
+  }
   function gameSave() {
     saveFile = [];
     for (var i = 0; i < varData.length; i++) {
@@ -375,7 +383,7 @@ $(function (){
     $('#craftMachine').html(function (index,html) {
       return '';
     });
-    for (var i = 0; i < machineType.length; i++) {
+    for (var i = 0; i < 2; i++) {
       if (machineLevelReq[i] <= level) {
         $('<div>').addClass('machine').appendTo('#craftMachine');
         if (machineUnlocked[i] == 0) {
@@ -450,7 +458,7 @@ $(function (){
     }
   }
   function terrariumTimeCalc() {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 2; i++) {
       if (machineStatus[i][1][0] == 0) {
         $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
           return 'Module (' + moduleCount + '/' + (i+1) + ') Not out yet :v';
@@ -1034,12 +1042,4 @@ function bugFix() {
   if (pondCount[mapNow] < 0) {
     pondCount[mapNow] = 0;
   }
-}
-function copyToClipboard(val) {
-  var t = document.createElement("textarea");
-  document.body.appendChild(t);
-  t.value = val;
-  t.select();
-  document.execCommand('copy');
-  document.body.removeChild(t);
 }
