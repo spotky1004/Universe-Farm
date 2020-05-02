@@ -459,9 +459,11 @@ $(function (){
   }
   function terrariumTimeCalc() {
     for (var i = 0; i < 2; i++) {
-      if (machineStatus[i][1][0] == 0) {
+      if (machineUnlocked[i] == 0) {
+
+      } else if (machineStatus[i][1][0] == 0) {
         $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
-          return 'Module (' + moduleCount + '/' + (i+1) + ') Not out yet :v';
+          return 'Module (' + moduleCount + '/' + (i+1) + ')';
         });
       } else {
         plantNumThis = (machineStatus[i][1][0]-1);
