@@ -15,10 +15,13 @@ $(function (){
   opening = 0;
   farming = 0;
   farmOn = 0;
+  thingSelected = 0;
   breakConfrim = 0;
   bulkSellCount = 1;
   bulkCraftCount = 1;
   bonusExp = 1;
+  rp = 0;
+  matCanCraft = [];
   pondCount = [0, 0, 0, 0, 0, 0];
   gateKey = [0, 0, 0, 0, 0, 0];
   debugStr = '';
@@ -130,6 +133,7 @@ $(function (){
           }
         }
       }
+      $('.craftBlock').css('height', (screenWidthBef*0.09+16) + 'px');
     }
     screenWidthBef = screenWidth;
     screenHeightBef = screenHeight;
@@ -298,6 +302,8 @@ $(function (){
       return '<div id=bulkCraft class=clearFix><span>x1</span><span>x10</span><span>x100</span><span>xMax</span></div>';
     });
     thingsIndex = 0;
+    thingsHave = 0;
+    matCanCraft = [];
     for (var i = 0; i < craftLvReq.length; i++) {
       if (craftLvReq[i] <= level) {
         maxBulk = [0, 0, 0];
@@ -327,45 +333,164 @@ $(function (){
           }
         }
         if (Math.min(maxBulk[0], maxBulk[1], maxBulk[2]) != 0) {
-          $('<span>').addClass('craftBlock').addClass('craftY').appendTo('#craftMaterial');
+          $('<span>').addClass('craftBlock').css('height', (screenWidthBef*0.09+16) + 'px').addClass('craftY').appendTo('#craftMaterial');
           craftMaxBulk[thingsIndex] = Math.min(maxBulk[0], maxBulk[1], maxBulk[2]);
         } else {
-          $('<span>').addClass('craftBlock').addClass('craftN').appendTo('#craftMaterial');
+          $('<span>').addClass('craftBlock').css('height', (screenWidthBef*0.09+16) + 'px').addClass('craftN').appendTo('#craftMaterial');
         }
-        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ')');
-        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ')');
-        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1)');
-        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1)');
-        $('<div>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1)');
-        $('.craftBlock:eq(' + thingsIndex + ') > div:eq(0)').html(function (index,html) {
+        $('<span>').appendTo('.craftBlock:eq(' + thingsHave + ')');
+        $('<span>').appendTo('.craftBlock:eq(' + thingsHave + ')');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsHave + ')');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsHave + ') > div');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsHave + ') > div');
+        $('<div>').appendTo('.craftBlock:eq(' + thingsHave + ') > div');
+        $('.craftBlock:eq(' + thingsHave + ') > span:eq(0)').html(function (index,html) {
           return craftName[thingsIndex] + ' (' + Math.min(bulkCraftCount, Math.min(maxBulk[0], maxBulk[1], maxBulk[2])) + ')';
         });
-        $('.craftBlock:eq(' + thingsIndex + ') > div:eq(0)').attr({
+        $('.craftBlock:eq(' + thingsHave + ') > span:eq(0)').attr({
           'style' : 'background-image: url(Resource/Material/' + (thingsIndex+1) + '.png)'
         });
+        $('.craftBlock:eq(' + thingsHave + ') > span:eq(1)').html(function (index,html) {
+          return '+' + notation(craftTech[thingsIndex]) + ' RP';
+        });
         for (var j = 0; j < 3; j++) {
-          $('<span>').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ')');
+          $('<span>').appendTo('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ')');
           if (thingCount[j] >= craftMaterialQuantity[i][j]) {
-            $('<p>').addClass('materialBack').addClass('materialY').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ')');
+            $('<p>').addClass('materialBack').addClass('materialY').appendTo('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ')');
           } else {
-            $('<p>').addClass('materialBack').addClass('materialN').appendTo('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ')');
+            $('<p>').addClass('materialBack').addClass('materialN').appendTo('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ')');
           }
           if (imgPath[j] != 0) {
-            $('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div:eq(' + j + ') > span').attr({
+            $('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ') > span').attr({
               'style' : 'background-image: url(Resource/' + imgPath[j] + '.png)'
             });
           }
         }
-        $('.craftBlock:eq(' + thingsIndex + ') > div:eq(1) > div > p').html(function (index,html) {
+        $('.craftBlock:eq(' + thingsHave + ') > div > div > p').html(function (index,html) {
           if (craftMaterialQuantity[i][index] != 0) {
             return notation(thingCount[index]) + '/' + notation(craftMaterialQuantity[i][index]);
           } else {
             return '';
           }
         });
-        thingsIndex++;
+        thingsHave++;
+        matCanCraft.push(thingsIndex);
+      }
+      thingsIndex++;
+    }
+  }
+  function displayMachine() {
+    $('#craftMachine').html(function (index,html) {
+      return '';
+    });
+    for (var i = 0; i < machineType.length; i++) {
+      if (machineLevelReq[i] <= level) {
+        $('<div>').addClass('machine').appendTo('#craftMachine');
+        if (machineUnlocked[i] == 0) {
+          canBuy = [0, 0, 0];
+          thingCount = [0, 0, 0];
+          imgPath = ['', '', ''];
+          for (var j = 0; j < 3; j++) {
+            if (mechineMaterialId[i][j] <= 100) {
+              thingCount[j] = plantInventory[craftMaterialId[i][j]-1];
+              imgPath[j] = 'Plant/' + (mechineMaterialId[i][j]) + '-' + plantLevels[mechineMaterialId[i][j]-1];
+              canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+            } else if (mechineMaterialId[i][j] <= 200) {
+              thingCount[j] = material[mechineMaterialId[i][j]-101];
+              imgPath[j] = 'Material/' + (mechineMaterialId[i][j]-101+1);
+              canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+            } else {
+              if (mechineMaterialId[i][j] == 201) {
+                thingCount[j] = coin;
+                imgPath[j] = 'etc/coin';
+                canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+              } else if (mechineMaterialId[i][j] == 202) {
+                thingCount[j] = dia;
+                imgPath[j] = 'etc/diamond';
+                canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+              }
+            }
+          }
+          $('<div>').appendTo('#craftMachine > .machine:eq(' + i + ')');
+          for (var j = 0; j < 3; j++) {
+            $('<div>').appendTo('#craftMachine > .machine:eq(' + i + ') > div');
+          }
+          for (var j = 0; j < 3; j++) {
+            if (mechineMaterialId[i][j] != 0) {
+              $('<span>').css('background-image', 'url(Resource/' + imgPath[j] + '.png)').appendTo('#craftMachine > .machine:eq(' + i + ') > div > div:eq(' + j + ')');
+              $('<span>').appendTo('#craftMachine > .machine:eq(' + i + ') > div > div:eq(' + j + ')');
+              $('#craftMachine > .machine:eq(' + i + ') > div > div:eq(' + j + ') > span:eq(1)').html(function (index,html) {
+                return thingCount[j] + '/' + mechineMaterialQuantity[i][j];
+              });
+            } else {
+              $('<span>').appendTo('#craftMachine > .machine:eq(' + i + ') > div > div:eq(' + j + ')');
+              $('<span>').appendTo('#craftMachine > .machine:eq(' + i + ') > div > div:eq(' + j + ')');
+            }
+          }
+        } else if (machineType[i] == 0) {
+          for (var j = 0; j < 8; j++) {
+            $('<span>').appendTo('#craftMachine > .machine:eq(' + i + ')');
+          }
+          $('<div>').appendTo('#craftMachine > .machine:eq(' + i + ')');
+          for (var j = 0; j < 7; j++) {
+            if (moduleLevelReq[j] <= level) {
+              $('<span>').css('background-image', 'url(Resource/Material/' + (moduleId[j]+1) + '.png)').appendTo('#craftMachine > .machine:eq(' + i + ') > div');
+            }
+          }
+          $('.machine:eq(' + i + ') > span:eq(5)').html(function (index,html) {
+            return 'Plant(Hand)/Destory';
+          });
+          $('.machine:eq(' + i + ') > span:eq(6)').html(function (index,html) {
+            return 'De-Assign Module';
+          });
+          moduleCount = 0;
+          for (var j = 0; j < machineStatus[i][0].length; j++) {
+            if (machineStatus[i][0][j] >= 1) {
+              moduleCount++;
+            }
+          }
+          $('.machine:eq(' + i + ') > span:eq(3)').html(function (index,html) {
+            return machineName[i];
+          });
+          $('#craftMachine > .machine:eq(' + i + ') > span:eq(1)').css('background-image', 'url(Resource/Machine/' + (i+1) + '.png)');
+        }
       }
     }
+  }
+  function terrariumTimeCalc() {
+    for (var i = 0; i < 5; i++) {
+      if (machineStatus[i][1][0] == 0) {
+        $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
+          return 'Module (' + moduleCount + '/' + (i+1) + ') Not out yet :v';
+        });
+      } else {
+        plantNumThis = (machineStatus[i][1][0]-1);
+        plantTimeThis = machineStatus[i][1][1]+plantTime[plantNumThis]*1000;
+        plantTimeLeft = plantTimeThis-timeNow;
+        plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000)));
+        $('#craftMachine > .machine:eq(' + i + ') > span:eq(0)').css('background-image', 'url(Resource/Plant/' + (plantNumThis+1) + '-' + Math.floor(plantProgress*(plantLevels[plantNumThis]-1)+1) + '.png)');
+        if (plantProgress >= 1) {
+          plantProgressBulk = Math.floor(plantProgress);
+          machineStatus[i][1][1] = timeNow;
+          plantInventory[plantNumThis] += plantProgressBulk;
+          if (plantNumThis >= 6) {
+            bonusExp = 10*1.5**(plantNumThis-6);
+          }
+          exp += 5*2**plantNumThis*bonusExp*plantProgressBulk;
+          if (Math.random() < upgradeBought[2]/100) {
+            dia += 2**plantNumThis;
+          }
+        }
+        $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
+          return 'Planted: ' + plantName[plantNumThis] + ', Mature: ' + timeNotation(plantTimeLeft);
+        });
+      }
+    }
+  }
+  function displayResearch() {
+    $('#rpDisplay').html(function (index,html) {
+      return 'You have ' + notation(rp) + ' Research Points';
+    });
   }
   function levelUp() {
     $('#seedThing').html(function (index,html) {
@@ -588,6 +713,11 @@ $(function (){
       return shopName[shopPage];
     });
   });
+  $(document).on('click','#craftMenu > span',function() {
+    indexSel = $("#craftMenu > span").index(this);
+    $("#craftInner > div").hide();
+    $("#craftInner > div:eq(" + indexSel + ")").show();
+  });
   $(document).on('click','#creatureThing > span',function() {
     indexSel = $("#creatureThing > span").index(this);
     handType = 1;
@@ -668,42 +798,44 @@ $(function (){
   });
   $(document).on('click','#craftMaterial > .craftBlock:not(.craftN)',function() {
     indexThis = $("#craftMaterial > .craftBlock").index(this);
+    thingSelected = matCanCraft[indexThis];
     maxBulk = [0, 0, 0];
     thingCount = [0, 0, 0];
     for (var j = 0; j < 3; j++) {
-      if (craftMaterialId[indexThis][j] == 0) {
+      if (craftMaterialId[thingSelected][j] == 0) {
         maxBulk[j] = 100000;
-      } else if (craftMaterialId[indexThis][j] <= 100) {
-        thingCount[j] = plantInventory[craftMaterialId[indexThis][j]-1];
-        maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
-      } else if (craftMaterialId[indexThis][j] <= 200) {
-        thingCount[j] = material[craftMaterialId[indexThis][j]-101];
-        maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
+      } else if (craftMaterialId[thingSelected][j] <= 100) {
+        thingCount[j] = plantInventory[craftMaterialId[thingSelected][j]-1];
+        maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[thingSelected][j]);
+      } else if (craftMaterialId[thingSelected][j] <= 200) {
+        thingCount[j] = material[craftMaterialId[thingSelected][j]-101];
+        maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[thingSelected][j]);
       } else {
-        if (craftMaterialId[indexThis][j] == 201) {
+        if (craftMaterialId[thingSelected][j] == 201) {
           thingCount[j] = coin;
-          maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
-        } else if (craftMaterialId[indexThis][j] == 202) {
+          maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[thingSelected][j]);
+        } else if (craftMaterialId[thingSelected][j] == 202) {
           thingCount[j] = dia;
-          maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[indexThis][j]);
+          maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[thingSelected][j]);
         }
       }
     }
     bulkCraftThis = Math.min(bulkCraftCount, Math.min(maxBulk[0], maxBulk[1], maxBulk[2]));
     for (var j = 0; j < 3; j++) {
-      if (craftMaterialId[indexThis][j] <= 100) {
-        plantInventory[craftMaterialId[indexThis][j]-1] -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
-      } else if (craftMaterialId[indexThis][j] <= 200) {
-        material[craftMaterialId[indexThis][j]-101] -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
+      if (craftMaterialId[thingSelected][j] <= 100) {
+        plantInventory[craftMaterialId[thingSelected][j]-1] -= craftMaterialQuantity[thingSelected][j]*bulkCraftThis;
+      } else if (craftMaterialId[thingSelected][j] <= 200) {
+        material[craftMaterialId[thingSelected][j]-101] -= craftMaterialQuantity[thingSelected][j]*bulkCraftThis;
       } else {
-        if (craftMaterialId[indexThis][j] == 201) {
-          coin -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
-        } else if (craftMaterialId[indexThis][j] == 202) {
-          dia -= craftMaterialQuantity[indexThis][j]*bulkCraftThis;
+        if (craftMaterialId[thingSelected][j] == 201) {
+          coin -= craftMaterialQuantity[thingSelected][j]*bulkCraftThis;
+        } else if (craftMaterialId[thingSelected][j] == 202) {
+          dia -= craftMaterialQuantity[thingSelected][j]*bulkCraftThis;
         }
       }
     }
-    material[indexThis] += bulkCraftThis;
+    material[thingSelected] += bulkCraftThis;
+    rp += craftTech[thingSelected]*bulkCraftThis;
     displayCraft();
     displayInventory();
   });
@@ -769,12 +901,79 @@ $(function (){
 
     }
   });
+  $(document).on('click','#craftMachine > .machine',function() {
+    indexMach = $('#craftMachine > .machine').index(this);
+    if (machineUnlocked[indexMach] == 0) {
+      i = indexMach;
+      canBuy = [0, 0, 0];
+      thingCount = [0, 0, 0];
+      for (var j = 0; j < 3; j++) {
+        if (mechineMaterialId[i][j] <= 100) {
+          thingCount[j] = plantInventory[craftMaterialId[i][j]-1];
+          canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+        } else if (mechineMaterialId[i][j] <= 200) {
+          thingCount[j] = material[mechineMaterialId[i][j]-101];
+          canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+        } else {
+          if (mechineMaterialId[i][j] == 201) {
+            thingCount[j] = coin;
+            canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+          } else if (mechineMaterialId[i][j] == 202) {
+            thingCount[j] = dia;
+            canBuy[j] = Math.floor(thingCount[j]/mechineMaterialQuantity[i][j]);
+          }
+        }
+      }
+      if (canBuy[0] >= 1 && canBuy[1] >= 1 && canBuy[2] >= 1) {
+        machineUnlocked[i] = 1;
+        for (var j = 0; j < 3; j++) {
+          if (mechineMaterialId[i][j] <= 100) {
+            plantInventory[craftMaterialId[i][j]-1] -= mechineMaterialQuantity[i][j];
+          } else if (mechineMaterialId[i][j] <= 200) {
+            material[mechineMaterialId[i][j]-101] -= mechineMaterialQuantity[i][j];
+          } else {
+            if (mechineMaterialId[i][j] == 201) {
+              coin -= mechineMaterialQuantity[i][j];
+            } else if (mechineMaterialId[i][j] == 202) {
+              dia -= mechineMaterialQuantity[i][j];
+            }
+          }
+        }
+        displayMachine();
+        switch (indexMach) {
+          case 0:
+            machineStatus[i] = [[0], [0, 0]];
+            break;
+          case 1:
+            machineStatus[i] = [[0, 0], [0, 0]];
+            break;
+        }
+      }
+    }
+  });
+  $(document).on('click','#craftMachine > .machine > span:nth-child(6)',function() {
+    console.log(':D');
+    setTimeout(function(){
+      if (machineUnlocked[indexMach] != 0) {
+        if (machineStatus[indexMach][1][0] == 0 && handType == 2 && toolSel == 2) {
+          machineStatus[indexMach][1][0] = (handSel+1);
+          machineStatus[indexMach][1][1] = timeNow;
+        } else if (machineStatus[indexMach][1][0] != 0) {
+          machineStatus[indexMach][1][0] = 0;
+          machineStatus[indexMach][1][1] = 0;
+        }
+      }
+      displayMachine();
+      terrariumTimeCalc();
+    }, 0);
+  });
 
   setInterval( function (){
     displayMap();
     displayPlayer();
     displayShop();
     bugFix();
+    terrariumTimeCalc();
     if (farmOn == 1) {
       cellStatusSet(thisCell);
     }
@@ -784,6 +983,8 @@ $(function (){
   }, 1000);
   setInterval( function (){
     displayCraft();
+    displayMachine();
+    displayResearch();
   }, 10000);
 
 
@@ -817,6 +1018,8 @@ $(function (){
   displayMap();
   displayInventory();
   displayCraft();
+  displayMachine();
+  displayResearch();
   levelUp();
 });
 function gameReset() {
