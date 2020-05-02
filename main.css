@@ -627,7 +627,7 @@
   margin: 0;
   padding: 0;
   color: #77a2e6;
-  font-size: 16px;
+  font-size: 1vw;
   text-shadow: 2px 2px 0 rgba(119, 162, 230, 0.2);
 }
 .craftBlock > div {
@@ -645,6 +645,9 @@
   height: 1.3vw;
   width: 1.3vw;
   background-size: cover;
+}
+.craftBlock > div > div > p {
+  font-size: 1vw;
 }
 #rpDisplay {
   width: 100%;

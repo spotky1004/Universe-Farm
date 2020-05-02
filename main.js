@@ -21,6 +21,7 @@ $(function (){
   bulkCraftCount = 1;
   bonusExp = 1;
   rp = 0;
+  resetTimer = 10;
   matCanCraft = [];
   exportCoolTime = 0;
   pondCount = [0, 0, 0, 0, 0, 0];
@@ -134,7 +135,7 @@ $(function (){
           }
         }
       }
-      $('.craftBlock').css('height', (screenWidthBef*0.09+16) + 'px');
+      $('.craftBlock').css('height', (screenWidthBef*0.1+16) + 'px');
     }
     screenWidthBef = screenWidth;
     screenHeightBef = screenHeight;
@@ -334,10 +335,10 @@ $(function (){
           }
         }
         if (Math.min(maxBulk[0], maxBulk[1], maxBulk[2]) != 0) {
-          $('<span>').addClass('craftBlock').css('height', (screenWidthBef*0.09+16) + 'px').addClass('craftY').appendTo('#craftMaterial');
+          $('<span>').addClass('craftBlock').css('height', (screenWidthBef*0.1+16) + 'px').addClass('craftY').appendTo('#craftMaterial');
           craftMaxBulk[thingsIndex] = Math.min(maxBulk[0], maxBulk[1], maxBulk[2]);
         } else {
-          $('<span>').addClass('craftBlock').css('height', (screenWidthBef*0.09+16) + 'px').addClass('craftN').appendTo('#craftMaterial');
+          $('<span>').addClass('craftBlock').css('height', (screenWidthBef*0.1+16) + 'px').addClass('craftN').appendTo('#craftMaterial');
         }
         $('<span>').appendTo('.craftBlock:eq(' + thingsHave + ')');
         $('<span>').appendTo('.craftBlock:eq(' + thingsHave + ')');
@@ -903,6 +904,15 @@ $(function (){
           displayInventory();
         }
         break;
+      case 2:
+        resetTimer--;
+        $('#optionInnerWarp > div:eq(2)').html(function (index,html) {
+          return 'Reset Game (' + resetTimer + ')';
+        });
+        if (resetTimer == 0) {
+          gameReset();
+        }
+        break;
       default:
 
     }
@@ -986,6 +996,12 @@ $(function (){
   setInterval( function (){
     gameSave();
     exportCoolTime--;
+    if (resetTimer < 10) {
+      resetTimer++;
+    }
+    $('#optionInnerWarp > div:eq(2)').html(function (index,html) {
+      return 'Reset Game (' + resetTimer + ')';
+    });
   }, 1000);
   setInterval( function (){
     displayCraft();
