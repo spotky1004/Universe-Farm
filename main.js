@@ -427,7 +427,7 @@ $(function (){
               $('<span>').appendTo('#craftMachine > .machine:eq(' + i + ') > div > div:eq(' + j + ')');
             }
           }
-        } else if (machineType[i] == 0) {
+        } else if (machineType[i] == 0 && machineUnlocked[i] == 1) {
           for (var j = 0; j < 8; j++) {
             $('<span>').appendTo('#craftMachine > .machine:eq(' + i + ')');
           }
@@ -952,7 +952,6 @@ $(function (){
     }
   });
   $(document).on('click','#craftMachine > .machine > span:nth-child(6)',function() {
-    console.log(':D');
     setTimeout(function(){
       if (machineUnlocked[indexMach] != 0) {
         if (machineStatus[indexMach][1][0] == 0 && handType == 2 && toolSel == 2) {
