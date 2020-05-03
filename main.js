@@ -22,6 +22,7 @@ $(function (){
   bonusExp = 1;
   rp = 0;
   resetTimer = 10;
+  bulkResearchCount = 0;
   matCanCraft = [];
   exportCoolTime = 0;
   pondCount = [0, 0, 0, 0, 0, 0];
@@ -145,11 +146,11 @@ $(function (){
         for (var k = 0; k < 3; k++) {
           thisPoint = (i-2)*7+j-2;
           farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
-          if (maps[mapNow][thisPoint] != 1 && pickaxeUsed[mapNow][thisPoint] < timeNow-(((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]+1)**2 && pickaxeUsed[mapNow][thisPoint] != 0) {
+          if (maps[mapNow][thisPoint] != 1 && pickaxeUsed[mapNow][thisPoint] < timeNow-(((farFromCenter-1)**6+1)*10000)/((upgradeBought[0]+1)**2*researchBoost[5]) && pickaxeUsed[mapNow][thisPoint] != 0) {
             opening = 0;
             maps[mapNow][thisPoint] = 1;
           }
-          if (tiles[mapNow][thisPoint] == 0 && hoeUsed[mapNow][thisPoint] < timeNow-(600000/(upgradeBought[1]**2+1)) && hoeUsed[mapNow][thisPoint] != 0) {
+          if (tiles[mapNow][thisPoint] == 0 && hoeUsed[mapNow][thisPoint] < timeNow-(600000/((upgradeBought[1]**2+1)*researchBoost[6])) && hoeUsed[mapNow][thisPoint] != 0) {
             farming = 0;
             tiles[mapNow][thisPoint] = 5;
           }
@@ -185,19 +186,19 @@ $(function (){
             }
             tileName = tileImageTile[tiles[mapNow][thisPoint]];
             if (maps[mapNow][thisPoint] != 1 && pickaxeUsed[mapNow][thisPoint] != 0) {
-              blockStatus = Math.floor((1-(pickaxeUsed[mapNow][thisPoint]-(timeNow-((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]+1)**2)))/((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]+1)**2))*5)+1;
+              blockStatus = Math.floor((1-(pickaxeUsed[mapNow][thisPoint]-(timeNow-((((farFromCenter-1)**6+1)*10000)/((upgradeBought[0]+1)**2*researchBoost[5]))))/((((farFromCenter-1)**6+1)*10000)/((upgradeBought[0]+1)**2*researchBoost[5])))*5)+1;
               tileName = 'Resource/Motion/b' + blockStatus + '.png';
             }
             if (tiles[mapNow][thisPoint] == 0 && hoeUsed[mapNow][thisPoint] != 0) {
-              blockStatus = Math.floor((1-(((hoeUsed[mapNow][thisPoint])-(timeNow-(600000/(upgradeBought[1]**2+1))))/((600000/(upgradeBought[1]**2+1)))))*5)+1;
+              blockStatus = Math.floor((1-(((hoeUsed[mapNow][thisPoint])-(timeNow-(600000/(((upgradeBought[1]**2+1)*researchBoost[6])))))/((600000/(((upgradeBought[1]**2+1)*researchBoost[6]))))))*5)+1;
               tileName = 'Resource/Motion/f' + blockStatus + '.png';
             }
           } else if (k == 2) {
             if (plantPlantedTime[mapNow][thisPoint] != 0) {
               seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
-              blockStatus = Math.floor((1-((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))*(plantLevels[seedNum]-1))+1;
-              if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
-                plantPlantedTime[mapNow][thisPoint] = timeNow-(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1));
+              blockStatus = Math.floor((1-((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))*(plantLevels[seedNum]-1))+1;
+              if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
+                plantPlantedTime[mapNow][thisPoint] = timeNow-(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0]));
               }
               tileName = 'Resource/Plant/' + (seedNum+1) + '-' + blockStatus + '.png';
             } else {
@@ -274,7 +275,7 @@ $(function (){
           'style' : 'background-image: url(Resource/Plant/' + (i+1) + '-' + plantLevels[i] + '.png)'
         });
         $('.inventoryItem:eq(' + thingsHave + ') > span:eq(1) > div:eq(0)').html(function (index,html) {
-          return plantName[i] + ' (Sell Price: ' + notation(plantSellPrice[i]) + ')';
+          return plantName[i] + ' (Sell Price: ' + notation(plantSellPrice[i]*researchBoost[2]) + ')';
         });
         $('.inventoryItem:eq(' + thingsHave + ') > span:eq(1) > div:eq(1)').html(function (index,html) {
           return 'You own: ' + plantInventory[i];
@@ -353,7 +354,7 @@ $(function (){
           'style' : 'background-image: url(Resource/Material/' + (thingsIndex+1) + '.png)'
         });
         $('.craftBlock:eq(' + thingsHave + ') > span:eq(1)').html(function (index,html) {
-          return '+' + notation(craftTech[thingsIndex]) + ' RP';
+          return '+' + notation(craftTech[thingsIndex]*researchBoost[7]) + ' RP';
         });
         for (var j = 0; j < 3; j++) {
           $('<span>').appendTo('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ')');
@@ -495,6 +496,21 @@ $(function (){
     $('#rpDisplay').html(function (index,html) {
       return 'You have ' + notation(rp) + ' Research Points';
     });
+    researchBoost[0] = 1+Math.log10(researchSpent[0]/100+1);
+    researchBoost[1] = 5*Math.log10(researchSpent[1]/100+1)/100;
+    researchBoost[2] = 1.5**Math.log10(researchSpent[2]/100+1);
+    researchBoost[3] = 1.2**Math.log10(researchSpent[3]/100+1);
+    researchBoost[4] = 3*Math.log10(researchSpent[4]/1500+1)/100;
+    researchBoost[5] = 1+Math.log10(researchSpent[5]/100+1)/2;
+    researchBoost[6] = 1+Math.log10(researchSpent[6]/100+1)/3;
+    researchBoost[7] = 1.15**Math.log10(researchSpent[7]/100+1);
+    $('.researchCell > span:nth-child(2)').html(function (index,html) {
+      if (index != 1 && index != 4) {
+        return notation(researchSpent[index]) + ' RP spent (x' + (researchBoost[index]).toFixed(2) + ')';
+      } else {
+        return notation(researchSpent[index]) + ' RP spent (' + (researchBoost[index]*100).toFixed(1) + '%)';
+      }
+    });
   }
   function levelUp() {
     $('#seedThing').html(function (index,html) {
@@ -523,7 +539,7 @@ $(function (){
     cellStatus = '';
     if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
       seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
-      cellStatus += plantName[seedNum] + '<br>Seed planted here!<br>(Mature: ' + timeNotation((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow) + ')';
+      cellStatus += plantName[seedNum] + '<br>Seed planted here!<br>(Mature: ' + timeNotation((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow) + ')';
     } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4) {
         cellStatus += 'Fire Portal<br>';
@@ -540,15 +556,15 @@ $(function (){
       if (tiles[mapNow][thisPoint] != 0 && tiles[mapNow][thisPoint] < 15) {
         if (handType == 2 && toolSel == 2) {
           seedNum = handSel;
-          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand ' + timeNotation(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)) + ')';
+          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand ' + timeNotation(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])) + ')';
         } else {
           cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click/destory!<br>(Hand/Hoe)';
         }
       } else if (maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
         if (hoeUsed[mapNow][thisPoint] != 0) {
-          cellStatus += 'Grass Field<br>Making farm!<br>(Hoe ' + timeNotation((hoeUsed[mapNow][thisPoint]+(600000)/(upgradeBought[1]**2+1))-timeNow) + ')<br>Click again to cancel<br>'
+          cellStatus += 'Grass Field<br>Making farm!<br>(Hoe ' + timeNotation((hoeUsed[mapNow][thisPoint]+(600000)/((upgradeBought[1]**2+1)*researchBoost[6]))-timeNow) + ')<br>Click again to cancel<br>'
         } else {
-          cellStatus += 'Grass Field<br>Click to make farm/make!<br>(Hoe ' + timeNotation(600000/(upgradeBought[1]**2+1)) + '/Hand)';
+          cellStatus += 'Grass Field<br>Click to make farm/make!<br>(Hoe ' + timeNotation(600000/((upgradeBought[1]**2+1)*researchBoost[6])) + '/Hand)';
         }
       } else if (tiles[mapNow][thisPoint] >= 15) {
         if (tiles[mapNow][thisPoint] <= 17) {
@@ -567,11 +583,11 @@ $(function (){
       }
     } else if ((thisPoint >= 7 && maps[mapNow][thisPoint-7] >= 1) || (thisPoint <= 41 && maps[mapNow][thisPoint+7] >= 1) || (thisPoint%7 != 0 && maps[mapNow][thisPoint-1] >= 1) || ((thisPoint+1)%7 != 0 && maps[mapNow][thisPoint+1] >= 1)) {
       if (pickaxeUsed[mapNow][thisPoint] != 0) {
-        cellStatus += 'Block<br>Making grass field!<br>(' + timeNotation((pickaxeUsed[mapNow][thisPoint]+(((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1))-timeNow) + ')<br>Click again to cancel';
+        cellStatus += 'Block<br>Making grass field!<br>(' + timeNotation((pickaxeUsed[mapNow][thisPoint]+(((farFromCenter-1)**6+1)*10000)/((upgradeBought[0]**2+1)*researchBoost[5]))-timeNow) + ')<br>Click again to cancel';
       } else if (opening == 1) {
         cellStatus += 'Already working!<br>';
       } else {
-        cellStatus += 'Block<br>Click to make grass field!<br>(Pickaxe ' + timeNotation((((farFromCenter-1)**6+1)*10000)/(upgradeBought[0]**2+1)) + ')';
+        cellStatus += 'Block<br>Click to make grass field!<br>(Pickaxe ' + timeNotation((((farFromCenter-1)**6+1)*10000)/((upgradeBought[0]**2+1)*researchBoost[5])) + ')';
       }
     }
     if (cellStatus == '') {
@@ -612,14 +628,24 @@ $(function (){
       }
     } else if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
       seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
-      if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
+      if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
         plantInventory[seedNum]++;
         if (seedNum >= 6) {
           bonusExp = 10*1.5**(seedNum-6);
         }
         exp += 5*2**seedNum*bonusExp;
         if (Math.random() < upgradeBought[2]/100) {
-          dia += 2**plantPlantedSeed[mapNow][thisPoint];
+          dia += 2**plantPlantedSeed[mapNow][thisPoint]*researchBoost[3];
+        }
+        if (Math.random() < researchBoost[1]) {
+          plantInventory[seedNum]++;
+          if (seedNum >= 6) {
+            bonusExp = 10*1.5**(seedNum-6);
+          }
+          exp += 5*2**seedNum*bonusExp;
+          if (Math.random() < upgradeBought[2]/100) {
+            dia += 2**plantPlantedSeed[mapNow][thisPoint]*researchBoost[3];
+          }
         }
         plantPlantedSeed[mapNow][thisPoint] = 0;
         plantPlantedTime[mapNow][thisPoint] = 0;
@@ -772,6 +798,27 @@ $(function (){
     }
     displayCraft();
   });
+  $(document).on('click','#bulkResearch > span',function() {
+    indexThis = $("#bulkResearch > span").index(this);
+    switch (indexThis) {
+      case 0:
+        bulkResearchCount = 0;
+        break;
+      case 1:
+        bulkResearchCount = 1;
+        break;
+      case 2:
+        bulkResearchCount = 2;
+        break;
+      case 3:
+        bulkResearchCount = 3;
+        break;
+      case 4:
+        bulkResearchCount = 4;
+        break;
+    }
+    displayCraft();
+  });
   $(document).on('click','.inventoryItem',function() {
     indexThis = $(".inventoryItem").index(this);
     plantIndex = 0;
@@ -791,7 +838,7 @@ $(function (){
       sellCount = plantInventory[plantSelected];
     }
     plantInventory[plantSelected] -= sellCount;
-    coin += plantSellPrice[plantSelected]*sellCount;
+    coin += plantSellPrice[plantSelected]*sellCount*researchBoost[2];
     displayInventory();
   });
   $(document).on('click','#innerUpgrade > div:not(.upgradeN)',function() {
@@ -839,7 +886,10 @@ $(function (){
       }
     }
     material[thingSelected] += bulkCraftThis;
-    rp += craftTech[thingSelected]*bulkCraftThis;
+    if (Math.random() < researchBoost[4]) {
+      material[thingSelected] += bulkCraftThis;
+    }
+    rp += craftTech[thingSelected]*bulkCraftThis*researchBoost[7];
     displayCraft();
     displayInventory();
   });
@@ -967,6 +1017,46 @@ $(function (){
       }
     }
   });
+  $(document).on('click','#craftResearch > .researchCell',function() {
+    indexResearch = $('#craftResearch > .researchCell').index(this);
+  });
+  $(document).on('click','.researchCell > span:nth-child(3)',function() {
+    setTimeout(function(){
+      switch (bulkResearchCount) {
+        case 0:
+          if (rp >= 1) {
+            researchSpent[indexResearch] += 1;
+            rp -= 1;
+          }
+          break;
+        case 1:
+          if (rp >= 10) {
+            researchSpent[indexResearch] += Math.floor(rp/10);
+            rp -= Math.floor(rp/10);
+          }
+          break;
+        case 2:
+          if (rp >= 4) {
+            researchSpent[indexResearch] += Math.floor(rp/4);
+            rp -= Math.floor(rp/4);
+          }
+          break;
+        case 3:
+          if (rp >= 2) {
+            researchSpent[indexResearch] += Math.floor(rp/2);
+            rp -= Math.floor(rp/2);
+          }
+          break;
+        case 4:
+          if (rp >= 1) {
+            researchSpent[indexResearch] += rp;
+            rp = 0;
+          }
+          break;
+      }
+      displayResearch();
+    }, 0);
+  });
   $(document).on('click','#craftMachine > .machine > span:nth-child(6)',function() {
     setTimeout(function(){
       if (machineUnlocked[indexMach] != 0) {
@@ -995,6 +1085,7 @@ $(function (){
   }, 100);
   setInterval( function (){
     gameSave();
+    displayResearch();
     exportCoolTime--;
     if (resetTimer < 10) {
       resetTimer++;
@@ -1006,7 +1097,6 @@ $(function (){
   setInterval( function (){
     displayCraft();
     displayMachine();
-    displayResearch();
   }, 10000);
 
 
@@ -1038,10 +1128,10 @@ $(function (){
   gameLoad();
   gameSave();
   displayMap();
-  displayInventory();
-  displayCraft();
   displayMachine();
   displayResearch();
+  displayCraft();
+  displayInventory();
   levelUp();
 });
 function gameReset() {

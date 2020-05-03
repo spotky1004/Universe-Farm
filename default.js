@@ -12,7 +12,8 @@ varData = [
   'plantInventory', 'upgradeBought', 'notationForm', 'coin', 'dia',
   'level', 'exp', 'expNeed', 'mapNow', 'opening',
   'pondCount', 'gateKey', 'plantPlantedSeed', 'farming', 'bulkSellCount',
-  'bulkCraftCount', 'material', 'rp', 'machineUnlocked', 'machineStatus'
+  'bulkCraftCount', 'material', 'rp', 'machineUnlocked', 'machineStatus',
+  'bulkResearchCount', 'researchSpent'
 ];
 resetData = {
   0: [
@@ -415,6 +416,11 @@ resetData = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  ],
+  25: 0,
+  26: [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   ]
@@ -940,4 +946,12 @@ mechineMaterialId = [
 ];
 mechineMaterialQuantity = [
   [25, 10, 1], [10, 7, 1]
+];
+researchSpent = [
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+];
+researchBoost = [
+  1, 0, 1, 1, 0, 1, 1, 1, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
