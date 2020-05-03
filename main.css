@@ -546,6 +546,10 @@
 
   transition: all 1s;
 }
+#optionInnerWarp > div:nth-child(4) > a {
+  color: black;
+  text-decoration: none;
+}
 #optionInnerWarp > div:hover {
   width: 50vw;
   color: white;
