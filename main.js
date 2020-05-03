@@ -1006,15 +1006,15 @@ $(function (){
             }
           }
         }
-        displayMachine();
         switch (indexMach) {
           case 0:
-            machineStatus[indexMach] = [[0], [0, 0]];
+            machineStatus[0] = [[0], [0, 0]];
             break;
           case 1:
-            machineStatus[indexMach] = [[0, 0], [0, 0]];
+            machineStatus[1] = [[0, 0], [0, 0]];
             break;
         }
+        displayMachine();
       }
     }
   });
