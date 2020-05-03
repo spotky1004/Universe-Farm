@@ -90,7 +90,7 @@ $(function (){
       return notation(coin);
     });
     $('#diamond').html(function (index,html) {
-      return dia;
+      return Math.floor(dia);
     });
     $('#level').html(function (index,html) {
       return 'Lv '+ level;
