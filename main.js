@@ -504,6 +504,7 @@ $(function (){
     researchBoost[5] = 1+Math.log10(researchSpent[5]/100+1)/2;
     researchBoost[6] = 1+Math.log10(researchSpent[6]/100+1)/3;
     researchBoost[7] = 1.15**Math.log10(researchSpent[7]/100+1);
+    researchBoost[8] = 2**Math.log10(researchSpent[8]/100+1);
     $('.researchCell > span:nth-child(2)').html(function (index,html) {
       if (index != 1 && index != 4) {
         return notation(researchSpent[index]) + ' RP spent (x' + (researchBoost[index]).toFixed(2) + ')';
@@ -633,7 +634,7 @@ $(function (){
         if (seedNum >= 6) {
           bonusExp = 10*1.5**(seedNum-6);
         }
-        exp += 5*2**seedNum*bonusExp;
+        exp += 5*2**seedNum*bonusExp*researchBoost[8];
         if (Math.random() < upgradeBought[2]/100) {
           dia += 2**plantPlantedSeed[mapNow][thisPoint]*researchBoost[3];
         }
@@ -642,7 +643,7 @@ $(function (){
           if (seedNum >= 6) {
             bonusExp = 10*1.5**(seedNum-6);
           }
-          exp += 5*2**seedNum*bonusExp;
+          exp += 5*2**seedNum*bonusExp*researchBoost[8];
           if (Math.random() < upgradeBought[2]/100) {
             dia += 2**plantPlantedSeed[mapNow][thisPoint]*researchBoost[3];
           }
