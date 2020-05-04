@@ -873,7 +873,7 @@ craftName = [
  'Fabric', 'Fertilizer', 'Iron Bar', 'Mineral Bar', 'Rainbow',
  'Mint Bait', 'Mineral Water', 'Energy', 'Battery', 'Overcharged Battery',
  'Machine Casing', 'Machine Casing II', 'Machine Casing III', 'Machine Casing IV', 'Machine Casing V',
- '? Module', 'Speed Module', 'Bio Module', '? Module II', 'Speed Module II',
+ 'Research Module', 'Speed Module', 'Bio Module', 'Research Module II', 'Speed Module II',
  'Bio Module II', 'Ultimate Module', 'Miracle Powder'
 ];
 craftLvReq = [
@@ -917,6 +917,17 @@ machineUnlocked = [
 ];
 machineStatus = [
   [[0], [0, 0]], [[0, 0], [0, 0]], [[0, 0, 0], [0, 0]], [[0, 0, 0, 0], [0, 0]], [[0, 0, 0, 0, 0], [0, 0]], 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+];
+machinePower = [
+  [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

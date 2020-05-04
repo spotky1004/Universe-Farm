@@ -447,9 +447,35 @@ $(function (){
             return 'De-Assign Module';
           });
           moduleCount = 0;
+          machinePower[i] = [0, 0, 0];
           for (var j = 0; j < machineStatus[i][0].length; j++) {
             if (machineStatus[i][0][j] >= 1) {
               moduleCount++;
+              switch (machineStatus[i][0][j]) {
+                case 15:
+                  machinePower[i][0]++;
+                  break;
+                case 18:
+                  machinePower[i][0] += 3;
+                  break;
+                case 16:
+                  machinePower[i][1]++;
+                  break;
+                case 19:
+                  machinePower[i][1] += 3;
+                  break;
+                case 17:
+                  machinePower[i][2]++;
+                  break;
+                case 20:
+                  machinePower[i][2] += 3;
+                  break;
+                case 21:
+                  machinePower[i][0] += 3;
+                  machinePower[i][1] += 3;
+                  machinePower[i][2] += 3;
+                  break;
+              }
             }
           }
           $('.machine:eq(' + i + ') > span:eq(3)').html(function (index,html) {
@@ -470,14 +496,14 @@ $(function (){
         });
       } else {
         plantNumThis = (machineStatus[i][1][0]-1);
-        plantTimeThis = machineStatus[i][1][1]+plantTime[plantNumThis]*1000;
+        plantTimeThis = machineStatus[i][1][1]+plantTime[plantNumThis]*1000/(2**machinePower[i][1]);
         plantTimeLeft = plantTimeThis-timeNow;
-        plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000)));
+        plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1]))));
         $('#craftMachine > .machine:eq(' + i + ') > span:eq(0)').css('background-image', 'url(Resource/Plant/' + (plantNumThis+1) + '-' + Math.floor(plantProgress*(plantLevels[plantNumThis]-1)+1) + '.png)');
         if (plantProgress >= 1) {
           plantProgressBulk = Math.floor(plantProgress);
           machineStatus[i][1][1] = timeNow;
-          plantInventory[plantNumThis] += plantProgressBulk;
+          plantInventory[plantNumThis] += plantProgressBulk*(machinePower[i][2]);
           if (plantNumThis >= 6) {
             bonusExp = 10*1.5**(plantNumThis-6);
           }
@@ -485,9 +511,11 @@ $(function (){
           if (Math.random() < upgradeBought[2]/100) {
             dia += 2**plantNumThis;
           }
+          rp += (((plantNumThis+1)**1.5)*machinePower[i][0]*plantProgressBulk)/10;
+          displayResearch();
         }
         $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
-          return 'Planted: ' + plantName[plantNumThis] + ', Mature: ' + timeNotation(plantTimeLeft);
+          return 'Planted: ' + plantName[plantNumThis] + ', Mature: ' + timeNotation(plantTimeLeft) + ', Module (' + moduleCount + '/' + (i+1) + ')';
         });
       }
     }
@@ -1079,6 +1107,36 @@ $(function (){
       }
       displayMachine();
       terrariumTimeCalc();
+    }, 0);
+  });
+  $(document).on('click','.machine > div > span',function() {
+    indexModule = $('.machine > div > span').index(this);
+    setTimeout(function(){
+      indexSocket = -1;
+      for (var i = 0; i < machineStatus[indexMach][0].length; i++) {
+        if (machineStatus[indexMach][0][i] == 0) {
+          indexSocket = i;
+          break;
+        }
+      }
+      if (material[moduleId[indexModule]] >= 1 && indexSocket != -1) {
+        machineStatus[indexMach][0][indexSocket] = moduleId[indexModule];
+        material[moduleId[indexModule]]--;
+      }
+      displayMachine();
+      terrariumTimeCalc();
+    }, 0);
+  });
+  $(document).on('click','#craftMachine > .machine > span:nth-child(7)',function() {
+    setTimeout(function(){
+      for (var i = 0; i < machineStatus[indexMach][0].length; i++) {
+        if (machineStatus[indexMach][0][i] >= 1) {
+          material[machineStatus[indexMach][0][i]]++;
+          machineStatus[indexMach][0][i] = 0;
+        }
+      }
+      displayMachine();
+      displayInventory();
     }, 0);
   });
 
