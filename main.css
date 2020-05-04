@@ -555,6 +555,9 @@
 
   transition: all 0.2s;
 }
+#craftMaterial {
+  height: auto;
+}
 #bulkCraft {
   margin-left: 5px;
   margin-bottom: 5px;

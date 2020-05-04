@@ -386,7 +386,7 @@ $(function (){
     $('#craftMachine').html(function (index,html) {
       return '';
     });
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 5; i++) {
       if (machineLevelReq[i] <= level) {
         $('<div>').addClass('machine').appendTo('#craftMachine');
         if (machineUnlocked[i] == 0) {
@@ -487,7 +487,7 @@ $(function (){
     }
   }
   function terrariumTimeCalc() {
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 5; i++) {
       if (machineUnlocked[i] == 0) {
 
       } else if (machineStatus[i][1][0] == 0) {
@@ -1048,6 +1048,15 @@ $(function (){
             break;
           case 1:
             machineStatus[1] = [[0, 0], [0, 0]];
+            break;
+          case 2:
+            machineStatus[2] = [[0, 0, 0], [0, 0]];
+            break;
+          case 3:
+            machineStatus[3] = [[0, 0, 0, 0], [0, 0]];
+            break;
+          case 4:
+            machineStatus[4] = [[0, 0, 0, 0, 0], [0, 0]];
             break;
         }
         displayMachine();
