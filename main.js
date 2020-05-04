@@ -559,7 +559,11 @@ $(function (){
           seedNum = handSel;
           cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand ' + timeNotation(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])) + ')';
         } else {
-          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click/destory!<br>(Hand/Hoe)';
+          if (breakConfrim == 1) {
+            cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Click one more time to break<br>';
+          } else {
+            cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click/destory!<br>(Hand/Hoe)';
+          }
         }
       } else if (maps[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
         if (hoeUsed[mapNow][thisPoint] != 0) {
@@ -664,8 +668,12 @@ $(function (){
         plantPlantedTime[mapNow][thisPoint] = new Date().getTime();
       }
     } else if (toolSel == 1 && maps[mapNow][thisPoint] >= 1 && (1 <= tiles[mapNow][thisPoint] && tiles[mapNow][thisPoint] < 15)) {
-      tiles[mapNow][thisPoint] = 0;
-      hoeUsed[mapNow][thisPoint] = 0;
+      if (breakConfrim == 1) {
+        tiles[mapNow][thisPoint] = 0;
+        hoeUsed[mapNow][thisPoint] = 0;
+      } else {
+        breakConfrim = 1;
+      }
     } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4 && gateKey[0] == 1) {
         if (1 == 1) {
