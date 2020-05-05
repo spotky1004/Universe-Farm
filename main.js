@@ -141,6 +141,7 @@ $(function (){
     screenWidthBef = screenWidth;
     screenHeightBef = screenHeight;
     timeNow = new Date().getTime();
+    $('#gameScreen').css('background-color', '#' + bgColor[mapNow]);
     for (var i = 2; i < 9; i++) {
       for (var j = 2; j < 9; j++) {
         for (var k = 0; k < 3; k++) {
@@ -155,7 +156,13 @@ $(function (){
             tiles[mapNow][thisPoint] = 5;
           }
           if (k == 0) {
-            tileName = tileImageBackground[maps[mapNow][thisPoint]];
+            if (maps[mapNow][thisPoint] == -1) {
+              tileName = tileImageBackground[mapNow+7];
+            } else if (maps[mapNow][thisPoint] == 0) {
+              tileName = tileImageBackground[mapNow];
+            } else if (maps[mapNow][thisPoint] == 1){
+              tileName = tileImageBackground[mapNow+7];
+            }
           } else if (k == 1) {
             if (tiles[mapNow][thisPoint] >= 1 && tiles[mapNow][thisPoint] < 15) {
               tiles[mapNow][thisPoint] = 5;
@@ -193,10 +200,13 @@ $(function (){
               blockStatus = Math.floor((1-(((hoeUsed[mapNow][thisPoint])-(timeNow-(600000/(((upgradeBought[1]**2+1)*researchBoost[6])))))/((600000/(((upgradeBought[1]**2+1)*researchBoost[6]))))))*5)+1;
               tileName = 'Resource/Motion/f' + blockStatus + '.png';
             }
+            if (maps[mapNow][thisPoint] == -1) {
+              tileName = 'Resource/Portal/0O.png';
+            }
           } else if (k == 2) {
             if (plantPlantedTime[mapNow][thisPoint] != 0) {
               seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
-              blockStatus = Math.floor((1-((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1)))*(plantLevels[seedNum]-1))+1;
+              blockStatus = Math.floor((1-((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow)/(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))*(plantLevels[seedNum]-1))+1;
               if (0 >= ((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow)/(plantTime[seedNum]*1000/((tiles[mapNow][thisPoint]-5)/2+1))) {
                 plantPlantedTime[mapNow][thisPoint] = timeNow-(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0]));
               }
@@ -215,27 +225,35 @@ $(function (){
       } else {
         $('#l1C5Z2').css('background-image', 'url(Resource/Portal/1C.png)');
       }
+    } else {
+      $('#l5C9Z2').css('background-image', 'url(Resource/trans.png)');
     }
     if (maps[mapNow][21] == 1 && mapNow == 0) {
-      if (gateKey[1] == 1) {
+      if (gateKey[3] == 1) {
         $('#l5C1Z2').css('background-image', 'url(Resource/Portal/4O.png)');
       } else {
         $('#l5C1Z2').css('background-image', 'url(Resource/Portal/4C.png)');
       }
+    } else {
+      $('#l5C9Z2').css('background-image', 'url(Resource/trans.png)');
     }
     if (maps[mapNow][27] == 1 && mapNow == 0) {
-      if (gateKey[2] == 1) {
+      if (gateKey[1] == 1) {
         $('#l5C9Z2').css('background-image', 'url(Resource/Portal/2O.png)');
       } else {
         $('#l5C9Z2').css('background-image', 'url(Resource/Portal/2C.png)');
       }
+    } else {
+      $('#l5C9Z2').css('background-image', 'url(Resource/trans.png)');
     }
     if (maps[mapNow][45] == 1 && mapNow == 0) {
-      if (gateKey[3] == 1) {
+      if (gateKey[2] == 1) {
         $('#l9C5Z2').css('background-image', 'url(Resource/Portal/3O.png)');
       } else {
         $('#l9C5Z2').css('background-image', 'url(Resource/Portal/3C.png)');
       }
+    } else {
+      $('#l5C9Z2').css('background-image', 'url(Resource/trans.png)');
     }
   }
   function displayShop() {
@@ -491,14 +509,29 @@ $(function (){
       if (machineUnlocked[i] == 0) {
 
       } else if (machineStatus[i][1][0] == 0) {
+        moduleCount = 0;
+        for (var j = 0; j < machineStatus[i][0].length; j++) {
+          if (machineStatus[i][0][j] >= 1) {
+            moduleCount++;
+          }
+        }
         $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
           return 'Module (' + moduleCount + '/' + (i+1) + ')';
         });
       } else {
+        moduleCount = 0;
+        for (var j = 0; j < machineStatus[i][0].length; j++) {
+          if (machineStatus[i][0][j] >= 1) {
+            moduleCount++;
+          }
+        }
         plantNumThis = (machineStatus[i][1][0]-1);
         plantTimeThis = machineStatus[i][1][1]+plantTime[plantNumThis]*1000/(2**machinePower[i][1]);
         plantTimeLeft = plantTimeThis-timeNow;
         plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1]))));
+        if (plantProgress >= 1) {
+          plantProgress = 1;
+        }
         $('#craftMachine > .machine:eq(' + i + ') > span:eq(0)').css('background-image', 'url(Resource/Plant/' + (plantNumThis+1) + '-' + Math.floor(plantProgress*(plantLevels[plantNumThis]-1)+1) + '.png)');
         if (plantProgress >= 1) {
           plantProgressBulk = Math.floor(plantProgress);
@@ -566,10 +599,7 @@ $(function (){
     thisPoint = Math.floor((thisCell-9)/9)*7+thisCell%9-1;
     farFromCenter = Math.abs((thisPoint)%7-3)+Math.abs(Math.floor((thisPoint)/7)-3);
     cellStatus = '';
-    if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
-      seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
-      cellStatus += plantName[seedNum] + '<br>Seed planted here!<br>(Mature: ' + timeNotation((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow) + ')';
-    } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
+    if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4) {
         cellStatus += 'Fire Portal<br>';
       } else if (maps[mapNow][27] == 1 && mapNow == 0 && thisCell == 44) {
@@ -581,6 +611,9 @@ $(function (){
       } else {
         cellStatus += 'Locked!<br>'
       }
+    } else if (plantPlantedSeed[mapNow][thisPoint] >= 1) {
+        seedNum = plantPlantedSeed[mapNow][thisPoint]-1;
+        cellStatus += plantName[seedNum] + '<br>Seed planted here!<br>(Mature: ' + timeNotation((plantPlantedTime[mapNow][thisPoint]+(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])))-timeNow) + ')';
     } else if (maps[mapNow][thisPoint] >= 1) {
       if (tiles[mapNow][thisPoint] != 0 && tiles[mapNow][thisPoint] < 15) {
         if (handType == 2 && toolSel == 2) {
@@ -704,11 +737,7 @@ $(function (){
       }
     } else if ((0 <= thisCell && thisCell <= 8) || (72 <= thisCell && thisCell <= 80) || (thisCell%9 == 0) || ((thisCell+1)%9 == 0)) {
       if (maps[mapNow][3] == 1 && mapNow == 0 && thisCell == 4 && gateKey[0] == 1) {
-        if (1 == 1) {
-          alert('Comming Soon...');
-        } else {
-          mapNow = 1;
-        }
+        mapNow = 1;
       } else if (maps[mapNow][27] == 1 && mapNow == 0 && thisCell == 44 && gateKey[1] == 1) {
         if (1 == 1) {
           alert('Comming Soon...');
@@ -1121,6 +1150,15 @@ $(function (){
   $(document).on('click','.machine > div > span',function() {
     indexModule = $('.machine > div > span').index(this);
     setTimeout(function(){
+      unlockedModule = 0;
+      for (var i = 0; i < moduleLevelReq.length; i++) {
+        if (moduleLevelReq[i] <= level) {
+          unlockedModule++;
+        } else {
+          break;
+        }
+      }
+      indexModule -= unlockedModule*indexMach;
       indexSocket = -1;
       for (var i = 0; i < machineStatus[indexMach][0].length; i++) {
         if (machineStatus[indexMach][0][i] == 0) {
@@ -1128,6 +1166,7 @@ $(function (){
           break;
         }
       }
+      console.log(indexModule)
       if (material[moduleId[indexModule]] >= 1 && indexSocket != -1) {
         machineStatus[indexMach][0][indexSocket] = moduleId[indexModule];
         material[moduleId[indexModule]]--;
@@ -1169,6 +1208,7 @@ $(function (){
     $('#optionInnerWarp > div:eq(2)').html(function (index,html) {
       return 'Reset Game (' + resetTimer + ')';
     });
+    displayInventory();
   }, 1000);
   setInterval( function (){
     displayCraft();

@@ -425,6 +425,10 @@ resetData = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   ]
 };
+bgColor = [
+  '5acedb',
+  'e06a2f'
+];
 maps = [
   [
     0, 0, 0, 0, 0, 0, 0,
@@ -439,16 +443,7 @@ maps = [
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, -1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0
@@ -457,16 +452,7 @@ maps = [
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, -1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0
@@ -475,7 +461,25 @@ maps = [
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, -1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0
+  ],
+  [
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, -1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0
+  ],
+  [
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, -1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0
@@ -495,7 +499,7 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, -1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0
@@ -810,8 +814,20 @@ upgradeCost = [
   0, 0, 0, 0, 0
 ];
 tileImageBackground = [
-  'Resource/Background/block.png',
-  'Resource/Background/normal.png',
+  'Resource/Background/b1.png',
+  'Resource/Background/b2.png',
+  'Resource/Background/b3.png',
+  'Resource/Background/b4.png',
+  'Resource/Background/b5.png',
+  'Resource/Background/b6.png',
+  'Resource/Background/b7.png',
+  'Resource/Background/g1.png',
+  'Resource/Background/g2.png',
+  'Resource/Background/g3.png',
+  'Resource/Background/g4.png',
+  'Resource/Background/g5.png',
+  'Resource/Background/g6.png',
+  'Resource/Background/g7.png',
 ];
 tileImageTile = [
   'Resource/trans.png',
@@ -952,10 +968,12 @@ moduleId = [
   15, 18, 16, 19, 17, 20, 21
 ];
 machineName = [
-  'Mechanical Terrarium', 'Mechanical Terrarium II', 'Mechanical Terrarium III', 'Mechanical Terrarium IV', 'Mechanical Terrarium V'
+  'Mechanical Terrarium', 'Mechanical Terrarium II', 'Mechanical Terrarium III', 'Mechanical Terrarium IV', 'Mechanical Terrarium V',
+  'Fire Key'
 ];
 machineType = [
-  0, 0, 0, 0, 0
+  0, 0, 0, 0, 0,
+  1
 ];
 mechineMaterialId = [
   [101, 102, 111], [107, 109, 112], [104, 123, 113], [124, 106, 114], [126, 127, 115]
