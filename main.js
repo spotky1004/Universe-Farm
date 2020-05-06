@@ -619,7 +619,7 @@ $(function (){
       if (tiles[mapNow][thisPoint] != 0 && tiles[mapNow][thisPoint] < 15) {
         if (handType == 2 && toolSel == 2) {
           seedNum = handSel;
-          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Select seed and click!<br>(Hand ' + timeNotation(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])) + ')';
+          cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>-Selected seed-<br>' + plantName[seedNum] + '<br>(Mature: ' + timeNotation(plantTime[seedNum]*1000/(((tiles[mapNow][thisPoint]-5)/2+1)*researchBoost[0])) + ')';
         } else {
           if (breakConfrim == 1) {
             cellStatus += 'Farm Lv.' + (tiles[mapNow][thisPoint]-4) + '<br>Click one more time to break<br>';
