@@ -332,7 +332,7 @@ $(function (){
         imgPath = ['', '', ''];
         for (var j = 0; j < 3; j++) {
           if (craftMaterialId[i][j] == 0) {
-            maxBulk[j] = 100000;
+            maxBulk[j] = 1e10;
           } else if (craftMaterialId[i][j] <= 100) {
             thingCount[j] = plantInventory[craftMaterialId[i][j]-1];
             imgPath[j] = 'Plant/' + (craftMaterialId[i][j]) + '-' + plantLevels[craftMaterialId[i][j]-1];
@@ -410,7 +410,7 @@ $(function (){
         thingCount = [0, 0, 0];
         for (var j = 0; j < 3; j++) {
           if (craftMaterialId[i][j] == 0) {
-            maxBulk[j] = 100000;
+            maxBulk[j] = 1e10;
           } else if (craftMaterialId[i][j] <= 100) {
             thingCount[j] = plantInventory[craftMaterialId[i][j]-1];
             maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
@@ -932,7 +932,7 @@ $(function (){
         bulkCraftCount = 100;
         break;
       case 3:
-        bulkCraftCount = 10000;
+        bulkCraftCount = 1e10;
         break;
     }
     displayCraftMin();
@@ -992,7 +992,7 @@ $(function (){
     thingCount = [0, 0, 0];
     for (var j = 0; j < 3; j++) {
       if (craftMaterialId[thingSelected][j] == 0) {
-        maxBulk[j] = 100000;
+        maxBulk[j] = 1e10;
       } else if (craftMaterialId[thingSelected][j] <= 100) {
         thingCount[j] = plantInventory[craftMaterialId[thingSelected][j]-1];
         maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[thingSelected][j]);
