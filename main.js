@@ -549,7 +549,7 @@ $(function (){
           displayResearch();
         }
         $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
-          return 'Planted: ' + plantName[plantNumThis] + ', Mature: ' + timeNotation(plantTimeLeft) + ', Module (' + moduleCount + '/' + (i+1) + ')';
+          return 'Planted: ' + plantName[plantNumThis] + ', Mature: ' + timeNotation(Math.max(plantTimeLeft, 0)) + ', Module (' + moduleCount + '/' + (i+1) + ')';
         });
       }
     }
