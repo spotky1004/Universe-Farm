@@ -543,7 +543,7 @@ $(function (){
           }
           exp += 5*2**plantNumThis*bonusExp*plantProgressBulk;
           if (Math.random() < upgradeBought[2]/100) {
-            dia += 2**plantNumThis;
+            dia += 2**plantNumThis*plantProgressBulk;
           }
           rp += ((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10;
           displayResearch();
