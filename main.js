@@ -526,9 +526,9 @@ $(function (){
           }
         }
         plantNumThis = (machineStatus[i][1][0]-1);
-        plantTimeThis = machineStatus[i][1][1]+plantTime[plantNumThis]*1000/(2**machinePower[i][1]);
+        plantTimeThis = machineStatus[i][1][1]+plantTime[plantNumThis]*1000/(2**machinePower[i][1])/researchBoost[0];
         plantTimeLeft = plantTimeThis-timeNow;
-        plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1]))));
+        plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1])/researchBoost[0])));
         if (plantProgress >= 1) {
           plantProgress = 1;
         }
@@ -541,11 +541,25 @@ $(function (){
           if (plantNumThis >= 6) {
             bonusExp = 10*1.5**(plantNumThis-6);
           }
-          exp += 5*2**plantNumThis*bonusExp*plantProgressBulk;
+          exp += 5*2**plantNumThis*bonusExp*plantProgressBulk*researchBoost[8];
           if (Math.random() < upgradeBought[2]/100) {
-            dia += 2**plantNumThis*plantProgressBulk;
+            dia += 2**plantNumThis*plantProgressBulk*researchBoost[3];
           }
           rp += ((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10;
+          if (Math.random() < researchBoost[1]) {
+            plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1]))));
+            plantProgressBulk = Math.floor(plantProgress);
+            machineStatus[i][1][1] = timeNow;
+            plantInventory[plantNumThis] += plantProgressBulk*(machinePower[i][2]);
+            if (plantNumThis >= 6) {
+              bonusExp = 10*1.5**(plantNumThis-6);
+            }
+            exp += 5*2**plantNumThis*bonusExp*plantProgressBulk*researchBoost[8];
+            if (Math.random() < upgradeBought[2]/100) {
+              dia += 2**plantNumThis*plantProgressBulk*researchBoost[3];
+            }
+            rp += ((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10;
+          }
           displayResearch();
         }
         $('.machine:eq(' + i + ') > span:eq(4)').html(function (index,html) {
