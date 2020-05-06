@@ -53,13 +53,13 @@ $(function (){
   }
   function timeNotation(num) {
     if (num > 86400000) {
-      return (num/86400000).toFixed(4) + ' D';
+      return (num/86400000).toFixed(4) + 'D';
     } else if (num > 3600000) {
-      return (num/3600000).toFixed(3) + ' h';
+      return (num/3600000).toFixed(3) + 'h';
     } else if (num > 60000) {
-      return (num/60000).toFixed(2) + ' m';
+      return (num/60000).toFixed(2) + 'm';
     } else {
-      return (num/1000).toFixed(1) + ' s';
+      return (num/1000).toFixed(1) + 's';
     }
   }
   function copyToClipboard(val) {
