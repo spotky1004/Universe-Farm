@@ -592,9 +592,8 @@ $(function (){
         if (plantProgress >= 1) {
           plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1])/researchBoost[0])));
           plantProgressBulk = Math.floor(plantProgress);
-          console.log(plantProgressBulk);
           machineStatus[i][1][1] = timeNow;
-          plantInventory[plantNumThis] += plantProgressBulk*(machinePower[i][2]);
+          plantInventory[plantNumThis] += plantProgressBulk*(machinePower[i][2]+1);
           if (plantNumThis >= 6) {
             bonusExp = 10*1.5**(plantNumThis-6);
           }
