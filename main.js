@@ -400,6 +400,62 @@ $(function (){
       thingsIndex++;
     }
   }
+  function displayCraftMin() {
+    thingsIndex = 0;
+    thingsHave = 0;
+    matCanCraft = [];
+    for (var i = 0; i < craftLvReq.length; i++) {
+      if (craftLvReq[i] <= level) {
+        maxBulk = [0, 0, 0];
+        thingCount = [0, 0, 0];
+        for (var j = 0; j < 3; j++) {
+          if (craftMaterialId[i][j] == 0) {
+            maxBulk[j] = 100000;
+          } else if (craftMaterialId[i][j] <= 100) {
+            thingCount[j] = plantInventory[craftMaterialId[i][j]-1];
+            maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+          } else if (craftMaterialId[i][j] <= 200) {
+            thingCount[j] = material[craftMaterialId[i][j]-101];
+            maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+          } else {
+            if (craftMaterialId[i][j] == 201) {
+              thingCount[j] = coin;
+              maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+            } else if (craftMaterialId[i][j] == 202) {
+              thingCount[j] = dia;
+              maxBulk[j] = Math.floor(thingCount[j]/craftMaterialQuantity[i][j]);
+            }
+          }
+        }
+        if (Math.min(maxBulk[0], maxBulk[1], maxBulk[2]) != 0) {
+          $('.craftBlock:eq(' + thingsHave + ')').removeClass('craftN').addClass('craftY');
+          craftMaxBulk[thingsIndex] = Math.min(maxBulk[0], maxBulk[1], maxBulk[2]);
+        } else {
+          $('.craftBlock:eq(' + thingsHave + ')').removeClass('craftY').addClass('craftN');
+        }
+        $('.craftBlock:eq(' + thingsHave + ') > span:eq(0)').html(function (index,html) {
+          return craftName[thingsIndex] + ' (' + Math.min(bulkCraftCount, craftMaxBulk[thingsIndex]) + ')';
+        });
+        for (var j = 0; j < 3; j++) {
+          if (thingCount[j] >= craftMaterialQuantity[i][j]) {
+            $('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ') > p').addClass('materialBack').removeClass('materialN').addClass('materialY');
+          } else {
+            $('.craftBlock:eq(' + thingsHave + ') > div > div:eq(' + j + ') > p').addClass('materialBack').removeClass('materialY').addClass('materialN');
+          }
+        }
+        $('.craftBlock:eq(' + thingsHave + ') > div > div > p').html(function (index,html) {
+          if (craftMaterialQuantity[i][index] != 0) {
+            return notation(thingCount[index]) + '/' + notation(craftMaterialQuantity[i][index]);
+          } else {
+            return '';
+          }
+        });
+        thingsHave++;
+        matCanCraft.push(thingsIndex);
+      }
+      thingsIndex++;
+    }
+  }
   function displayMachine() {
     $('#craftMachine').html(function (index,html) {
       return '';
@@ -608,6 +664,8 @@ $(function (){
         });
       }
     }
+    displayMachine();
+    displayCraft();
   }
   function cellStatusSet(num) {
     thisCell = num;
@@ -877,7 +935,7 @@ $(function (){
         bulkCraftCount = 10000;
         break;
     }
-    displayCraft();
+    displayCraftMin();
   });
   $(document).on('click','#bulkResearch > span',function() {
     indexThis = $("#bulkResearch > span").index(this);
@@ -898,7 +956,6 @@ $(function (){
         bulkResearchCount = 4;
         break;
     }
-    displayCraft();
   });
   $(document).on('click','.inventoryItem',function() {
     indexThis = $(".inventoryItem").index(this);
@@ -971,7 +1028,7 @@ $(function (){
       material[thingSelected] += bulkCraftThis;
     }
     rp += craftTech[thingSelected]*bulkCraftThis*researchBoost[7];
-    displayCraft();
+    displayCraftMin();
     displayInventory();
   });
   $(document).on('click','#goCraft',function() {
@@ -1216,6 +1273,7 @@ $(function (){
   setInterval( function (){
     gameSave();
     displayResearch();
+    displayCraftMin();
     exportCoolTime--;
     if (resetTimer < 10) {
       resetTimer++;
@@ -1225,11 +1283,6 @@ $(function (){
     });
     displayInventory();
   }, 1000);
-  setInterval( function (){
-    displayCraft();
-    displayMachine();
-  }, 10000);
-
 
   for (var i = 1; i < 10; i++) {
     for (var j = 1; j < 10; j++) {
