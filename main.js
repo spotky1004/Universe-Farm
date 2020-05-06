@@ -590,7 +590,7 @@ $(function (){
         }
         $('#craftMachine > .machine:eq(' + i + ') > span:eq(0)').css('background-image', 'url(Resource/Plant/' + (plantNumThis+1) + '-' + Math.floor(plantProgress*(plantLevels[plantNumThis]-1)+1) + '.png)');
         if (plantProgress >= 1) {
-          plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1]))));
+          plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1])/researchBoost[0])));
           plantProgressBulk = Math.floor(plantProgress);
           machineStatus[i][1][1] = timeNow;
           plantInventory[plantNumThis] += plantProgressBulk*(machinePower[i][2]);
