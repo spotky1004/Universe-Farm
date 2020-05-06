@@ -545,7 +545,7 @@ $(function (){
           if (Math.random() < upgradeBought[2]/100) {
             dia += 2**plantNumThis*plantProgressBulk*researchBoost[3];
           }
-          rp += ((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10;
+          rp += Math.floor(((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10);
           if (Math.random() < researchBoost[1]) {
             plantProgress = (1-(plantTimeLeft/(plantTime[plantNumThis]*1000/(2**machinePower[i][1]))));
             plantProgressBulk = Math.floor(plantProgress);
@@ -558,7 +558,7 @@ $(function (){
             if (Math.random() < upgradeBought[2]/100) {
               dia += 2**plantNumThis*plantProgressBulk*researchBoost[3];
             }
-            rp += ((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10;
+            rp += Math.floor(((1.3**(plantNumThis+1))*machinePower[i][0]*plantProgressBulk)/10);
           }
           displayResearch();
         }
