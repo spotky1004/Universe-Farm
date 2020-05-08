@@ -1223,6 +1223,7 @@ $(function (){
     indexModule = $('.machine > div > span').index(this);
     setTimeout(function(){
       unlockedModule = 0;
+      unlockedMachine = 0;
       for (var i = 0; i < moduleLevelReq.length; i++) {
         if (moduleLevelReq[i] <= level) {
           unlockedModule++;
@@ -1230,7 +1231,12 @@ $(function (){
           break;
         }
       }
-      indexModule -= unlockedModule*indexMach;
+      for (var i = 0; i < (indexMach+1); i++) {
+        if (machineUnlocked[i] == 1) {
+          unlockedMachine++;
+        }
+      }
+      indexModule -= unlockedModule*(unlockedMachine-1);
       indexSocket = -1;
       for (var i = 0; i < machineStatus[indexMach][0].length; i++) {
         if (machineStatus[indexMach][0][i] == 0) {
